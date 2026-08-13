@@ -2,7 +2,18 @@
 
 Siti one-page standardizzati per categorie di PMI italiane, con personalizzazione guidata e pipeline di generazione automatizzata.
 
-**Stato:** Fase 0 — accordo sulle decisioni che toccano lo schema. Nessun codice ancora.
+**Stato:** Blocco 0 chiuso — schema, tipi e validatore in `packages/vetrina-schema`. Il prossimo è il Blocco 1, il contratto di ingestion.
+
+## Pacchetti
+
+| | |
+|---|---|
+| [`packages/vetrina-schema`](packages/vetrina-schema) | Schema Zod del `content.json`, tipi derivati, CLI `vetrina-validate`. Fonte unica di verità |
+
+```sh
+pnpm install
+pnpm -r test
+```
 
 ## Dove guardare
 
@@ -10,8 +21,8 @@ Siti one-page standardizzati per categorie di PMI italiane, con personalizzazion
 |---|---|
 | Cosa si costruisce e cosa no | [`docs/vetrina-documento-progetto.md`](docs/vetrina-documento-progetto.md) |
 | Come si lavora e in che ordine | [`docs/processo-sviluppo.md`](docs/processo-sviluppo.md) |
-| Lacune del disegno, `L1`…`L32` | [`docs/analisi-lacune.md`](docs/analisi-lacune.md) |
-| Decisioni aperte, `D1`…`D34` | [`docs/decisioni-aperte.md`](docs/decisioni-aperte.md) |
+| Lacune del disegno, `L1`…`L33` | [`docs/analisi-lacune.md`](docs/analisi-lacune.md) |
+| Decisioni aperte, `D1`…`D43` | [`docs/decisioni-aperte.md`](docs/decisioni-aperte.md) |
 | Dove siamo adesso | [`docs/stato-avanzamento.md`](docs/stato-avanzamento.md) |
 | Regole per ogni sessione | [`CLAUDE.md`](CLAUDE.md) |
 | Riferimento dello schema | [`docs/riferimenti/content.example.json`](docs/riferimenti/content.example.json) |

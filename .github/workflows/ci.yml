@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verifica:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # 20 e' il minimo dichiarato in CLAUDE.md: se si rompe li', si rompe per chi lo usa.
+        node: ["20", "22"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Tipi
+        run: pnpm -r typecheck
+
+      - name: Test
+        run: pnpm -r test
+
+      # Il criterio del Blocco 0 verificato dov'e' visibile, non solo dentro i test:
+      # il validatore accetta l'esempio di riferimento e rifiuta cio' che deve rifiutare.
+      - name: Il validatore accetta content.example.json
+        run: node packages/vetrina-schema/dist/cli.js docs/riferimenti/content.example.json
+
+      - name: Il validatore rifiuta un content.json rotto
+        run: |
+          rotto="$(mktemp -d)/content.json"
+          node -e '
+            const fs = require("node:fs");
+            const doc = JSON.parse(fs.readFileSync("docs/riferimenti/content.example.json", "utf8"));
+            doc.tema.palette = "palette_99";
+            fs.writeFileSync(process.argv[1], JSON.stringify(doc));
+          ' "$rotto"
+          if node packages/vetrina-schema/dist/cli.js "$rotto"; then
+            echo "il validatore ha accettato un documento non valido"
+            exit 1
+          fi

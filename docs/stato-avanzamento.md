@@ -1,24 +1,28 @@
 # Vetrina — stato di avanzamento
 
-**Aggiornato:** 12 agosto 2026
+**Aggiornato:** 13 agosto 2026
 
 ## Dove siamo
 
-**Fase 0 — Accordo**, passo 0.1 **chiuso**: tutte le decisioni che toccano lo schema (D1–D12, D35, D36) sono decise. Il gate del Blocco 0 è passato.
+**Blocco 0 — Schema e validatore: chiuso.** Il pacchetto `packages/vetrina-schema` contiene lo schema Zod completo, i tipi derivati, il validatore CLI e 51 test che girano in CI su Node 20 e 22.
 
-Restano da fare 0.2 (allineare i due documenti) e 0.3 (aggiornare `content.example.json`), che sono allineamento e non decisione: si fanno nella stessa sessione in cui si scrive lo schema. Nessuna decisione blocca più il Blocco 0.
+Il criterio è verificato per intero: il validatore accetta `content.example.json` e rifiuta con errore leggibile tutti e nove i casi negativi richiesti. La prova che i test mordono è stata fatta togliendo una validazione dallo schema e verificando che il test corrispondente fallisse.
+
+**Fase 0 — Accordo: chiusa.** D1–D12, D35, D36 decise; documenti allineati; `content.example.json` aggiornato.
 
 **Deciso finora:** due repo invece di quattro (D1) · `leadhub` → `ingestion` (D2) · slot decorativi con stock ammesso (D3 → D35/D36) · `prezzo` nullable (D4) · `tag` enum (D5) · `cta.azione` unione discriminata (D6) · logo+favicon (D7) · `consenso_privacy` fisso (D8) · mezzanotte ammessa + 7 giorni (D9) · `variante` come preset (D10) · politica `schema_version` (D11) · `generazione.modello` fuori dal repo cliente (D12).
 
 **Aggiunto dalla revisione esterna:** L33/D37 (il copione di consegna manuale, unica procedura dei primi mesi non specificata) · correzione di L15/D15 (il beacon di click e l'IP) · regola commerciale accanto a D36 (foto minime = eccezione, mai default né demo).
+
+**Aperto dal Blocco 0:** D38–D43, i valori di dettaglio che scrivere lo schema ha costretto a fissare (numero di palette e font, valori di `tono`, limiti SEO, formato di `informativa_versione`). Sono enum e numeri, una riga ciascuno: si confermano al Blocco 3 e al Blocco 4, non prima.
 
 ## Blocchi
 
 | Blocco | Stato | Nota |
 |---|---|---|
 | Fase 0 — Accordo | **chiusa** | 0.1 decisioni ✅ · 0.2 allineamento documenti ✅ · 0.3 esempio aggiornato ✅ · 0.4 CLAUDE.md monorepo fatto (template da fare al Blocco 3) |
-| 0 — Schema e validatore | **pronto a partire** | Fase 0 chiusa. Il `content.example.json` aggiornato è il primo input. |
-| 1 — Contratto di ingestion | non iniziato | Bloccato da D13–D15 |
+| 0 — Schema e validatore | **chiuso** | `packages/vetrina-schema`: schema, tipi, CLI `vetrina-validate`, 51 test, CI su Node 20 e 22 |
+| 1 — Contratto di ingestion | **pronto a partire** | Bloccato da D13–D15: vanno chiuse prima di scrivere il contratto |
 | 2 — Componente form | non iniziato | |
 | 3 — Template ristorante | non iniziato | |
 | 4 — Demo pubblicata | non iniziato | Primo checkpoint reale |
@@ -46,4 +50,5 @@ Si attiva dal Blocco 4. La quota va fissata come numero in **D23** prima di arri
 | 2026-08-12 | Fase 0.1 | Chiuse D1 (due repo), D2 (`ingestion`), D3 (slot decorativi). D3 apre D35 (quali slot) e D36 (hero senza foto propria). L32 rivisto: sopravvalutava il vincolo delle foto, la gallery è disattivabile e il vincolo vero è l'hero. |
 | 2026-08-12 | Fase 0.1 cont. | Revisione esterna. Chiuse D4–D12, D35, D36 (raccomandazioni accettate). Corretta L15/D15: beacon e IP vanno su percorso senza conservazione IP. Aggiunta L33/D37 (copione di consegna manuale). Regola commerciale accanto a D36. Blocco 0 sbloccato. |
 | 2026-08-12 | Fase 0.2 | Allineamento documento di progetto: §8 riscritto (Lead Hub → contratto di ingestion con webhook Make); §9 eccezione dichiarata per pagine legali; §10 ordine aggiornato con Blocchi 0-11 e split 5a/5b; §11 stack aggiornato; §14.4 e §15 aggiornati su P.IVA (non blocca 5a, blocca 5b). |
+| 2026-08-13 | Blocco 0 | Monorepo pnpm inizializzato. `packages/vetrina-schema`: schema Zod completo (costanti, primitivi, orari, sezioni, azienda, forms, radice con le validazioni incrociate), tipi derivati, formattatore di errori in italiano, CLI `vetrina-validate` con codici di uscita. 51 test in quattro file: l'esempio di riferimento, i nove casi negativi, una decisione chiusa per volta, i codici di uscita della CLI. CI su Node 20 e 22 che gira tipi, test e il validatore sull'esempio. Aperte D38–D43 per i valori di dettaglio fissati per necessità. |
 | 2026-08-12 | Fase 0.3 | `content.example.json` aggiornato: `leadhub` → `ingestion` con endpoint webhook Make; `azienda.logo: null`; `consenso_privacy: true` in entrambi i form; CTA come unione discriminata (`tipo: form/ancora`); `fonte: "cliente"` su tutti gli oggetti immagine; `hero.sfondo: null` e `cta_finale.sfondo: null`; `prezzo_nota` aggiunto su ogni voce; un secondo con `prezzo: null, prezzo_nota: "s.q."`; `generazione.modello` rimosso; `testimonianze.voci` senza `fonte` esterna. Fase 0 chiusa. |

@@ -6,8 +6,8 @@ Regole valide su ogni sessione, in ogni repo del progetto. Vanno riportate nel `
 
 - `docs/vetrina-documento-progetto.md` — il vincolo di progetto. Si rilegge quando emerge la tentazione di allargare.
 - `docs/processo-sviluppo.md` — ordine dei blocchi e criteri di completamento **effettivi**. Prevale sul piano originale dove divergono.
-- `docs/analisi-lacune.md` — lacune con identificatori `L1`…`L32`. Si citano per riferimento.
-- `docs/decisioni-aperte.md` — decisioni `D1`…`D34` con stato. Si aggiorna quando se ne chiude una.
+- `docs/analisi-lacune.md` — lacune con identificatori `L1`…`L33`. Si citano per riferimento.
+- `docs/decisioni-aperte.md` — decisioni `D1`…`D43` con stato. Si aggiorna quando se ne chiude una.
 - `docs/stato-avanzamento.md` — dove siamo. Si aggiorna a ogni sessione.
 - `docs/riferimenti/content.example.json` — il riferimento concreto dello schema.
 

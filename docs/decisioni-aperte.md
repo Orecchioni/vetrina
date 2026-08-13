@@ -31,6 +31,21 @@ Queste vanno chiuse prima di scrivere lo schema, perché lo schema è la cosa pi
 | D35 | Quali sono esattamente gli slot decorativi introdotti da D3 | D3, L3 | **Due slot immagine, nessuna sezione nuova**, per non toccare l'ordine fisso del §4: `hero.sfondo` e `cta_finale.sfondo`, entrambi opzionali, entrambi con `stock` ammesso. `tema.texture` rimandato: campo a costo basso ma lavoro di CSS per palette, inutile finché non lo chiede un cliente. | **decisa 2026-08-12** |
 | D36 | Se `hero.sfondo` da solo basta a rendere l'hero, cioè se un cliente senza foto proprie può completare l'intake | D3, L32 | **Sì come capacità** (`refine`: almeno uno fra `hero.immagine` e `hero.sfondo`), **no come default**. La regola commerciale accanto — eccezione da concedere, mai opzione da offrire, mai per una demo — vive in L32 e nel copione di consegna (D37), non nello schema. | **decisa 2026-08-12** |
 
+## Prese nel Blocco 0 per scrivere lo schema — da confermare
+
+Scrivere lo schema ha richiesto di fissare valori che nessuna decisione precedente nominava. Sono tutti **enum o numeri**, cioè una riga in `costanti.ts` o in un `min`/`max`: cambiarli prima della prima consegna non costa niente. Sono raccolti qui invece che dispersi nel codice perché un valore inventato che nessuno ha guardato è il modo in cui una decisione si prende da sola.
+
+| # | Cosa è stato fissato | Valore | Da confermare quando |
+|---|---|---|---|
+| D38 | Numero di palette e coppie di font | 4 palette (`palette_1`…`palette_4`), 3 coppie (`font_1`…`font_3`) | Blocco 3: §6.2 dice «3-4 palette e 2-3 coppie», il numero esatto lo decide chi le disegna |
+| D39 | Valori di `tema.tono` | `familiare`, `professionale`, `contemporaneo` | Blocco 3. §6.2 dice «2-3 per categoria»: se il tono è per categoria e non globale, questo enum va ripensato |
+| D40 | Limiti di `meta.title` e `meta.description` | title 10-60, description 50-160 caratteri | Blocco 4, contro il punteggio SEO reale di Lighthouse |
+| D41 | Formato di `informativa_versione` | `AAAA-MM-vN`, dedotto dall'esempio | Blocco 1, insieme al contratto di ingestion |
+| D42 | `meta.lingua` è il letterale `it-IT` | letterale, non enum | Regge finché il multilingua resta fuori scope (§9). Se cade quel vincolo, cade questo |
+| D43 | Massimo di fasce orarie per giorno | 4 | Quando un cliente reale ne chiede una quinta |
+
+Non sono in questo elenco, perché discendono da decisioni già prese e non da una scelta libera: `azienda.telefono` e `whatsapp` annullabili (servono a rendere verificabili le CTA `tel`/`whatsapp` di D6), `azienda.piva` annullabile (D20 è aperta e la P.IVA non c'è), la tabella `TEMPLATE_VARIANTI` (è D10 resa eseguibile).
+
 ## Bloccano il Blocco 1 (contratto di ingestion)
 
 | # | Decisione | Rif. | Raccomandazione | Stato |

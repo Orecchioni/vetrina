@@ -44,8 +44,8 @@ Non è nel piano originale, e serve perché l'analisi ha trovato dodici decision
 | Passo | Cosa | Fatto quando | Stato |
 |---|---|---|---|
 | 0.1 | Chiudere le decisioni che toccano lo schema (D1–D12, D35, D36) in `decisioni-aperte.md` | Ogni voce ha una risposta e una data | ✅ 2026-08-12 |
-| 0.2 | Allineare il documento di progetto: §8 su Lead Hub (L1), §9 sulle pagine legali (L11), §6.5/§4 sugli slot decorativi (L3/D35), §10 sull'ordine (L2) | I due documenti non si contraddicono più su nessun punto | da fare |
-| 0.3 | Aggiornare `content.example.json` con le decisioni prese | È il riferimento contro cui il Blocco 0 verifica sé stesso, quindi va aggiornato prima | da fare |
+| 0.2 | Allineare il documento di progetto: §8 su Lead Hub (L1), §9 sulle pagine legali (L11), §6.5/§4 sugli slot decorativi (L3/D35), §10 sull'ordine (L2) | I due documenti non si contraddicono più su nessun punto | ✅ 2026-08-12 |
+| 0.3 | Aggiornare `content.example.json` con le decisioni prese | È il riferimento contro cui il Blocco 0 verifica sé stesso, quindi va aggiornato prima | ✅ 2026-08-12 |
 | 0.4 | `CLAUDE.md` per ogni repo | Regole non negoziabili più quelle specifiche del repo | parziale (monorepo fatto) |
 
 **Fase 0 chiusa quando:** 0.1–0.4 sono tutti fatti — cioè nessuna decisione schema resta aperta, i due documenti concordano, e `content.example.json` passa mentalmente lo schema deciso. Solo allora si apre il Blocco 0. Questa riga è la regola di chiusura che mancava: senza, la Fase 0 è l'unica fase del progetto senza un «fatto quando», in un progetto che ha un §13 apposta per non costruire a vuoto.

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+.DS_Store
+Thumbs.db
+
+.env
+.env.*
+!.env.example
+
+# Script usa-e-getta per portare i file da una sessione remota: non entrano nel repo
+setup*vetrina.ps1
