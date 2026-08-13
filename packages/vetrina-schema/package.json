@@ -15,10 +15,14 @@
     "vetrina-validate": "./dist/cli.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "src",
+    "tsconfig.json",
+    "tsconfig.build.json"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
     "test": "pnpm run build && vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
