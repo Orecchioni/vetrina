@@ -1,0 +1,191 @@
+{
+  "schema_version": "1.0.0",
+  "template": {
+    "id": "ristorante",
+    "variante": "trattoria",
+    "categoria_attivita": "ristorazione"
+  },
+  "tema": {
+    "palette": "palette_2",
+    "coppia_font": "font_1",
+    "tono": "familiare"
+  },
+  "azienda": {
+    "nome": "Trattoria da Nino",
+    "claim": "Cucina romana dal 1978",
+    "logo": null,
+    "email": "info@trattoriadanino.it",
+    "telefono": "+39 06 1234567",
+    "whatsapp": "+39 333 1234567",
+    "indirizzo": {
+      "via": "Via dei Coronari 42",
+      "cap": "00186",
+      "citta": "Roma",
+      "provincia": "RM",
+      "lat": 41.9009,
+      "lng": 12.4664
+    },
+    "social": {
+      "instagram": "https://instagram.com/trattoriadanino",
+      "facebook": "https://facebook.com/trattoriadanino",
+      "tripadvisor": null
+    },
+    "piva": "01234567890"
+  },
+  "meta": {
+    "title": "Trattoria da Nino — Cucina romana a Roma centro",
+    "description": "Trattoria romana dal 1978 nel cuore di Roma. Carbonara, cacio e pepe e amatriciana secondo tradizione. Prenota il tuo tavolo.",
+    "og_image": "https://res.cloudinary.com/.../og-danino.jpg",
+    "lingua": "it-IT"
+  },
+  "ingestion": {
+    "tenant_id": "tnt_8f2a91c4",
+    "endpoint": "https://hook.eu1.make.com/xxxxxxxxxxxxxxxxxxxx",
+    "informativa_versione": "2026-08-v1"
+  },
+  "forms": [
+    {
+      "id": "form_prenotazione",
+      "sorgente": "prenotazione_hero",
+      "campi_standard": ["nome", "email", "telefono"],
+      "campi_extra": [
+        { "chiave": "data_prenotazione", "etichetta": "Data", "tipo": "date", "obbligatorio": true },
+        { "chiave": "orario", "etichetta": "Orario", "tipo": "time", "obbligatorio": true },
+        { "chiave": "num_persone", "etichetta": "Numero di persone", "tipo": "number", "obbligatorio": true }
+      ],
+      "consenso_privacy": true,
+      "consenso_marketing": true
+    },
+    {
+      "id": "form_contatti",
+      "sorgente": "contatti_footer",
+      "campi_standard": ["nome", "email", "telefono", "messaggio"],
+      "campi_extra": [],
+      "consenso_privacy": true,
+      "consenso_marketing": true
+    }
+  ],
+  "sezioni": {
+    "hero": {
+      "attiva": true,
+      "titolo": "La cucina romana come si faceva una volta",
+      "sottotitolo": "Quarantasette anni nello stesso vicolo, con le stesse ricette.",
+      "immagine": {
+        "url": "https://res.cloudinary.com/.../hero-danino.jpg",
+        "alt": "Sala interna della Trattoria da Nino con tavoli apparecchiati",
+        "fonte": "cliente"
+      },
+      "sfondo": null,
+      "cta_primaria": { "testo": "Prenota un tavolo", "azione": { "tipo": "form", "form_id": "form_prenotazione" } },
+      "cta_secondaria": { "testo": "Guarda il menù", "azione": { "tipo": "ancora", "sezione": "servizi" } }
+    },
+    "chi_siamo": {
+      "attiva": true,
+      "titolo": "Da tre generazioni in Via dei Coronari",
+      "testo": "Nino ha aperto nel 1978 con sei tavoli e una cucina di quattro metri quadri. Oggi la trattoria è gestita dai figli, ma la carbonara si fa ancora come la faceva lui: guanciale, pecorino, uova e niente altro.",
+      "immagine": {
+        "url": "https://res.cloudinary.com/.../chisiamo-danino.jpg",
+        "alt": "Nino e i figli davanti all'ingresso della trattoria",
+        "fonte": "cliente"
+      }
+    },
+    "servizi": {
+      "attiva": true,
+      "titolo": "Il menù",
+      "sottotitolo": "Cambia con le stagioni, i classici restano.",
+      "gruppi": [
+        {
+          "nome": "Antipasti",
+          "voci": [
+            { "nome": "Fiori di zucca", "descrizione": "Ripieni di mozzarella e alici, in pastella", "prezzo": "8,00", "prezzo_nota": null, "tag": ["vegetariano"] },
+            { "nome": "Supplì al telefono", "descrizione": "Riso al sugo, mozzarella filante", "prezzo": "3,50", "prezzo_nota": null, "tag": [] },
+            { "nome": "Carciofo alla giudia", "descrizione": "Fritto intero, croccante", "prezzo": "9,00", "prezzo_nota": null, "tag": ["vegetariano", "stagionale"] }
+          ]
+        },
+        {
+          "nome": "Primi",
+          "voci": [
+            { "nome": "Carbonara", "descrizione": "Guanciale, pecorino romano, uova", "prezzo": "13,00", "prezzo_nota": null, "tag": [] },
+            { "nome": "Cacio e pepe", "descrizione": "Tonnarelli tirati a mano", "prezzo": "12,00", "prezzo_nota": null, "tag": ["vegetariano"] },
+            { "nome": "Amatriciana", "descrizione": "Guanciale, pomodoro, pecorino", "prezzo": "13,00", "prezzo_nota": null, "tag": [] }
+          ]
+        },
+        {
+          "nome": "Secondi",
+          "voci": [
+            { "nome": "Pesce del giorno", "descrizione": "Secondo disponibilità del mercato", "prezzo": null, "prezzo_nota": "s.q.", "tag": [] },
+            { "nome": "Saltimbocca alla romana", "descrizione": "Vitello, prosciutto, salvia", "prezzo": "16,00", "prezzo_nota": null, "tag": [] },
+            { "nome": "Coda alla vaccinara", "descrizione": "Brasata lentamente, con pinoli e uvetta", "prezzo": "14,00", "prezzo_nota": null, "tag": [] }
+          ]
+        }
+      ]
+    },
+    "gallery": {
+      "attiva": true,
+      "titolo": "Il locale",
+      "immagini": [
+        { "url": "https://res.cloudinary.com/.../g1.jpg", "alt": "Sala principale con soffitto a volte", "fonte": "cliente" },
+        { "url": "https://res.cloudinary.com/.../g2.jpg", "alt": "Piatto di carbonara appena servito", "fonte": "cliente" },
+        { "url": "https://res.cloudinary.com/.../g3.jpg", "alt": "Dehors esterno con tavoli sul vicolo", "fonte": "cliente" },
+        { "url": "https://res.cloudinary.com/.../g4.jpg", "alt": "Cucina a vista durante il servizio", "fonte": "cliente" },
+        { "url": "https://res.cloudinary.com/.../g5.jpg", "alt": "Bancone con bottiglie di vino", "fonte": "cliente" },
+        { "url": "https://res.cloudinary.com/.../g6.jpg", "alt": "Dettaglio di tavolo apparecchiato", "fonte": "cliente" }
+      ]
+    },
+    "testimonianze": {
+      "attiva": true,
+      "titolo": "Cosa dicono di noi",
+      "voci": [
+        { "autore": "Marco T.", "testo": "La carbonara migliore che abbia mangiato a Roma. Ci torno ogni volta che sono in centro.", "valutazione": 5 },
+        { "autore": "Elena R.", "testo": "Posto autentico, prezzi onesti, personale che ti fa sentire a casa.", "valutazione": 5 }
+      ]
+    },
+    "orari": {
+      "attiva": true,
+      "titolo": "Quando siamo aperti",
+      "settimana": [
+        { "giorno": "lunedi", "chiuso": true, "fasce": [] },
+        { "giorno": "martedi", "chiuso": false, "fasce": [{ "da": "12:30", "a": "15:00" }, { "da": "19:30", "a": "23:00" }] },
+        { "giorno": "mercoledi", "chiuso": false, "fasce": [{ "da": "12:30", "a": "15:00" }, { "da": "19:30", "a": "23:00" }] },
+        { "giorno": "giovedi", "chiuso": false, "fasce": [{ "da": "12:30", "a": "15:00" }, { "da": "19:30", "a": "23:00" }] },
+        { "giorno": "venerdi", "chiuso": false, "fasce": [{ "da": "12:30", "a": "15:00" }, { "da": "19:30", "a": "23:30" }] },
+        { "giorno": "sabato", "chiuso": false, "fasce": [{ "da": "12:30", "a": "15:00" }, { "da": "19:30", "a": "23:30" }] },
+        { "giorno": "domenica", "chiuso": false, "fasce": [{ "da": "12:30", "a": "15:30" }] }
+      ],
+      "nota": "Chiuso in agosto dal 10 al 25."
+    },
+    "mappa_contatti": {
+      "attiva": true,
+      "titolo": "Dove siamo",
+      "mostra_mappa": true,
+      "form_id": "form_contatti"
+    },
+    "cta_finale": {
+      "attiva": true,
+      "titolo": "Il tavolo ti aspetta",
+      "testo": "Prenota online, ti confermiamo entro un'ora.",
+      "sfondo": null,
+      "cta": { "testo": "Prenota ora", "azione": { "tipo": "form", "form_id": "form_prenotazione" } }
+    },
+    "footer": {
+      "attiva": true,
+      "mostra_social": true,
+      "mostra_piva": true,
+      "link_legali": [
+        { "testo": "Privacy Policy", "url": "/privacy" },
+        { "testo": "Cookie Policy", "url": "/cookie" }
+      ]
+    }
+  },
+  "video": {
+    "attivo": false,
+    "url": null,
+    "posizione": "hero",
+    "poster": null
+  },
+  "generazione": {
+    "data": "2026-08-12T10:32:00+02:00",
+    "input_hash": "a3f9c21e",
+    "revisione": 1
+  }
+}
