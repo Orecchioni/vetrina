@@ -6,7 +6,9 @@
 
 **Blocco 2 — Componente form condiviso: chiuso.** `packages/vetrina-form` contiene la logica di invio (unica, per regola 3), il componente `Form.astro`, il beacon di click. 25 test più `astro check`/`astro build` puliti su `apps/vetrina-form-demo`, l'app Astro minima usata solo per la prova richiesta dal blocco — non è l'app commerciale.
 
-**Verificato per costruzione (unit test) e per compilazione (build Astro reale):** i campi si generano dalla configurazione, l'honeypot scarta in silenzio, i dati non si perdono su un fallimento di rete, il payload rispetta il contratto del Blocco 1 al carattere. **Non verificato da qui:** che il POST arrivi davvero al webhook cliccando in un browser — richiede l'utente, come per il Blocco 1. Bug trovati e corretti scrivendo il componente: `campi_extra` andava perso se ricostruito dal DOM invece che passato come JSON dal server; un campo extra di tipo `textarea` produceva un `<input>` invalido; il tipo `ConfigForm` è stato esportato da `vetrina-schema` per evitare che `vetrina-form` dipendesse da `zod` solo per un tipo.
+**Verificato per intero, incluso in un browser vero (13/08):** dalla demo Astro, un invio reale del form ha prodotto una riga nuova sullo stesso Google Sheet del Blocco 1, e il form si è svuotato — il segnale di successo. Chiude tutti e quattro i criteri del Blocco 2: importato in un progetto Astro vuoto spedisce al webhook (fatto), rete assente non perde i dati (verificato via test unitari su `invio.ts`), honeypot scarta in silenzio (verificato via test unitari), beacon sui link `tel:`/WhatsApp presente e testato a livello di riconoscimento canale — il click vero non è stato provato in questa sessione, ma usa la stessa `invia()` già verificata.
+
+Bug trovati e corretti scrivendo il componente, non dai test: `campi_extra` andava perso se ricostruito dal DOM invece che passato come JSON dal server; un campo extra di tipo `textarea` produceva un `<input>` invalido; il tipo `ConfigForm` è stato esportato da `vetrina-schema` per evitare che `vetrina-form` dipendesse da `zod` solo per un tipo.
 
 **Blocco 1 — Contratto di ingestion: scenario Make costruito e verificato in parte.** [`docs/riferimenti/contratto-ingestion.md`](riferimenti/contratto-ingestion.md) fissa la forma esatta del payload, cosa timbra il server (D13), l'anti-abuso con i numeri (D14: 5 richieste/10 min per IP, 10 KB), e il beacon senza IP (D15).
 
@@ -40,7 +42,7 @@ Il criterio è verificato per intero: il validatore accetta `content.example.jso
 | Fase 0 — Accordo | **chiusa** | 0.1 decisioni ✅ · 0.2 allineamento documenti ✅ · 0.3 esempio aggiornato ✅ · 0.4 CLAUDE.md monorepo fatto (template da fare al Blocco 3) |
 | 0 — Schema e validatore | **chiuso** | `packages/vetrina-schema`: schema, tipi, CLI `vetrina-validate`, 51 test, CI su Node 20 e 22 |
 | 1 — Contratto di ingestion | **verificato in parte** | Submission valida e payload malformato confermati contro Make vero. Restano rate limit e ramo beacon, da chiudere prima del Blocco 4 |
-| 2 — Componente form | **chiuso** | `packages/vetrina-form`: logica, componente, beacon, 25 test, build Astro verificata. Manca solo la prova in browser contro un endpoint vero |
+| 2 — Componente form | **chiuso** | `packages/vetrina-form`: logica, componente, beacon, 25 test, build Astro verificata, invio reale confermato in browser |
 | 3 — Template ristorante | **pronto a partire** | |
 | 4 — Demo pubblicata | non iniziato | Primo checkpoint reale |
 | 5a — Vetrina commerciale | non iniziato | Da qui si contatta gente |
