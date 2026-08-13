@@ -54,14 +54,14 @@ Non sono in questo elenco, perché discendono da decisioni già prese e non da u
 | D14 | Anti-abuso sull'endpoint pubblico: rate limit, dimensione massima, endpoint per tenant | L12 | **Tutti e tre.** Rate limit **5 richieste ogni 10 minuti per IP**; payload massimo **10 KB**; **endpoint per tenant** è già soddisfatto strutturalmente — ogni `content.json` porta il proprio `ingestion.endpoint`, quindi un abuso su un sito non tocca gli altri per costruzione, non per configurazione aggiuntiva. Numero **deciso**, implementazione del rate limit **rimandata**: richiede un Data Store e una logica a finestra temporale sullo scenario Make, non ancora costruita — non blocca nulla finché l'endpoint non è incorporato in un sito pubblico (Blocco 4). | **decisa 2026-08-13 · da implementare prima del Blocco 4** |
 | D15 | Beacon di click su `tel:` e WhatsApp, e come tratta l'IP | L15 | Sì, `tipo: "click_contatto"`. **Correzione:** il beacon non timbra né conserva l'IP — è un contatore aggregato per sezione, non una riga con provenienza. Così resta vero che non serve consenso, senza dover ampliare l'informativa per un contatore. | **decisa 2026-08-13** |
 
-## Bloccano il Blocco 3 (template)
+## Bloccano il Blocco 3 (template) — ✅ tutte chiuse il 2026-08-13
 
 | # | Decisione | Rif. | Raccomandazione | Stato |
 |---|---|---|---|---|
-| D16 | Asset: il template accetta URL remoti e percorsi locali dal primo giorno | L13 | Sì, e la demo del Blocco 4 usa asset locali per misurare il profilo consegnato. | aperta |
-| D17 | Mappa statica invece dell'iframe | L14 | Statica. Nessun cookie di terze parti in tutto il sito, quindi nessun banner da progettare. | aperta |
-| D18 | Pagine `/privacy` e `/cookie` come eccezione dichiarata a §9, testo versionato nel pacchetto | L11 | Sì, con build che fallisce se `informativa_versione` non esiste nel pacchetto. | aperta |
-| D19 | Check in CI contro i letterali di contenuto nel sorgente | L24 | Sì. Mezz'ora per rendere vincolo la regola numero uno. | aperta |
+| D16 | Asset: il template accetta URL remoti e percorsi locali dal primo giorno | L13 | **Sì**, e la demo del Blocco 4 usa asset locali per misurare il profilo consegnato. | **decisa 2026-08-13** |
+| D17 | Mappa statica invece dell'iframe | L14 | **Statica.** Nessun cookie di terze parti in tutto il sito, quindi nessun banner da progettare. | **decisa 2026-08-13** |
+| D18 | Pagine `/privacy` e `/cookie` come eccezione dichiarata a §9, testo versionato nel pacchetto | L11 | **Sì**, con build che fallisce se `informativa_versione` non esiste nel pacchetto. | **decisa 2026-08-13** |
+| D19 | Check in CI contro i letterali di contenuto nel sorgente | L24 | **Sì.** Mezz'ora per rendere vincolo la regola numero uno. | **decisa 2026-08-13** |
 
 ## Bloccano il Blocco 5 (vetrina commerciale)
 
