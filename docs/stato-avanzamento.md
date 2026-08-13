@@ -4,6 +4,10 @@
 
 ## Dove siamo
 
+**Blocco 1 — Contratto di ingestion: contratto definito, verifica in sospeso.** [`docs/riferimenti/contratto-ingestion.md`](riferimenti/contratto-ingestion.md) fissa la forma esatta del payload, cosa timbra il server (D13), l'anti-abuso con i numeri (D14: 5 richieste/10 min per IP, 10 KB), e il beacon senza IP (D15).
+
+**Manca la parte non riproducibile da qui:** costruire lo scenario Make vero e lanciare i tre curl del §6 del contratto (submission conforme, payload malformato, oltre il rate limit). Richiede l'account Make dell'utente — nessuna sessione di sviluppo può chiuderlo da sola.
+
 **Blocco 0 — Schema e validatore: chiuso.** Il pacchetto `packages/vetrina-schema` contiene lo schema Zod completo, i tipi derivati, il validatore CLI e 51 test che girano in CI su Node 20 e 22.
 
 Il criterio è verificato per intero: il validatore accetta `content.example.json` e rifiuta con errore leggibile tutti e nove i casi negativi richiesti. La prova che i test mordono è stata fatta togliendo una validazione dallo schema e verificando che il test corrispondente fallisse.
@@ -22,8 +26,8 @@ Il criterio è verificato per intero: il validatore accetta `content.example.jso
 |---|---|---|
 | Fase 0 — Accordo | **chiusa** | 0.1 decisioni ✅ · 0.2 allineamento documenti ✅ · 0.3 esempio aggiornato ✅ · 0.4 CLAUDE.md monorepo fatto (template da fare al Blocco 3) |
 | 0 — Schema e validatore | **chiuso** | `packages/vetrina-schema`: schema, tipi, CLI `vetrina-validate`, 51 test, CI su Node 20 e 22 |
-| 1 — Contratto di ingestion | **pronto a partire** | Bloccato da D13–D15: vanno chiuse prima di scrivere il contratto |
-| 2 — Componente form | non iniziato | |
+| 1 — Contratto di ingestion | **contratto scritto, verifica manuale in sospeso** | D13–D15 chiuse. Manca costruire lo scenario Make e lanciare i tre curl del §6 — richiede l'account Make dell'utente |
+| 2 — Componente form | non iniziato | Può iniziare in parallelo: il contratto che consuma è già fissato |
 | 3 — Template ristorante | non iniziato | |
 | 4 — Demo pubblicata | non iniziato | Primo checkpoint reale |
 | 5a — Vetrina commerciale | non iniziato | Da qui si contatta gente |
@@ -51,4 +55,5 @@ Si attiva dal Blocco 4. La quota va fissata come numero in **D23** prima di arri
 | 2026-08-12 | Fase 0.1 cont. | Revisione esterna. Chiuse D4–D12, D35, D36 (raccomandazioni accettate). Corretta L15/D15: beacon e IP vanno su percorso senza conservazione IP. Aggiunta L33/D37 (copione di consegna manuale). Regola commerciale accanto a D36. Blocco 0 sbloccato. |
 | 2026-08-12 | Fase 0.2 | Allineamento documento di progetto: §8 riscritto (Lead Hub → contratto di ingestion con webhook Make); §9 eccezione dichiarata per pagine legali; §10 ordine aggiornato con Blocchi 0-11 e split 5a/5b; §11 stack aggiornato; §14.4 e §15 aggiornati su P.IVA (non blocca 5a, blocca 5b). |
 | 2026-08-13 | Blocco 0 | Monorepo pnpm inizializzato. `packages/vetrina-schema`: schema Zod completo (costanti, primitivi, orari, sezioni, azienda, forms, radice con le validazioni incrociate), tipi derivati, formattatore di errori in italiano, CLI `vetrina-validate` con codici di uscita. 51 test in quattro file: l'esempio di riferimento, i nove casi negativi, una decisione chiusa per volta, i codici di uscita della CLI. CI su Node 20 e 22 che gira tipi, test e il validatore sull'esempio. Aperte D38–D43 per i valori di dettaglio fissati per necessità. |
+| 2026-08-13 | Blocco 1 | Chiuse D13 (server timbra timestamp/IP, già normativa in CLAUDE.md regola 8), D14 (rate limit 5/10min per IP, payload max 10 KB, isolamento per tenant già strutturale), D15 (beacon senza IP, contatore aggregato). Scritto `docs/riferimenti/contratto-ingestion.md`: forma del payload per submission e beacon, cosa timbra il server, risposte e codici di errore, anti-abuso. §8 del documento di progetto aggiornato per rimandarci. Non chiuso: verifica con curl contro uno scenario Make reale, che richiede l'account dell'utente. |
 | 2026-08-12 | Fase 0.3 | `content.example.json` aggiornato: `leadhub` → `ingestion` con endpoint webhook Make; `azienda.logo: null`; `consenso_privacy: true` in entrambi i form; CTA come unione discriminata (`tipo: form/ancora`); `fonte: "cliente"` su tutti gli oggetti immagine; `hero.sfondo: null` e `cta_finale.sfondo: null`; `prezzo_nota` aggiunto su ogni voce; un secondo con `prezzo: null, prezzo_nota: "s.q."`; `generazione.modello` rimosso; `testimonianze.voci` senza `fonte` esterna. Fase 0 chiusa. |

@@ -10,6 +10,7 @@ Regole valide su ogni sessione, in ogni repo del progetto. Vanno riportate nel `
 - `docs/decisioni-aperte.md` — decisioni `D1`…`D43` con stato. Si aggiorna quando se ne chiude una.
 - `docs/stato-avanzamento.md` — dove siamo. Si aggiorna a ogni sessione.
 - `docs/riferimenti/content.example.json` — il riferimento concreto dello schema.
+- `docs/riferimenti/contratto-ingestion.md` — la forma esatta del payload verso l'endpoint (Blocco 1).
 
 ## Struttura dei repo (D1, decisa 2026-08-12)
 

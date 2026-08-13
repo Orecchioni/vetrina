@@ -255,16 +255,17 @@ Il punto 5 è l'unico non recuperabile a posteriori. Contatti raccolti senza con
 
 Lead Hub non esiste ancora. Il destinatario attuale è un webhook Make che riceve il payload, scrive una riga su Google Sheet e manda una notifica email. Quando Lead Hub esisterà, cambia l'URL nel `content.json` — nessuna modifica al codice.
 
-**Il vincolo non è il destinatario: è il contratto.** Il payload ha una forma fissa definita nel Blocco 1, e quella forma vale indipendentemente da dove finisce. Questo è ciò che rende il cambio di destinatario un'operazione di configurazione e non di riscrittura.
+**Il vincolo non è il destinatario: è il contratto.** Il payload ha una forma fissa, definita per intero in [`docs/riferimenti/contratto-ingestion.md`](riferimenti/contratto-ingestion.md) (Blocco 1, D13–D15), e quella forma vale indipendentemente da dove finisce. Questo è ciò che rende il cambio di destinatario un'operazione di configurazione e non di riscrittura.
 
-Il contratto definisce:
+In sintesi, il contratto fissa:
 
-- Campi standard: nome, email, telefono, messaggio
-- `campi_extra`: solo le chiavi in whitelist per quel form, scartato il resto
-- Consensi: privacy e marketing separati, booleani inviati dal client; timestamp e IP timbrati dal server
+- Campi standard: nome, email, telefono, messaggio — almeno uno fra email e telefono
+- `campi_extra`: solo le chiavi in whitelist per quel form, massimo 5, scartato il resto
+- Consensi: privacy e marketing separati, booleani inviati dal client; **timestamp e IP timbrati dal server**, mai dal client
 - Provenienza: `sorgente` dichiarata dal form, pagina di origine, parametri UTM
 - Il testo dell'informativa vive nel template con un numero di versione. Se cambia, cambia la versione — non si sovrascrive.
-- Ogni form dichiara la propria `sorgente`
+- Anti-abuso: 5 richieste ogni 10 minuti per IP, payload massimo 10 KB, isolamento per tenant strutturale (ogni sito ha il proprio endpoint)
+- Il beacon di click su `tel:`/WhatsApp non timbra né conserva l'IP: è un contatore aggregato, non una submission
 
 La chiave nel `content.json` è `ingestion` (non `leadhub`): `tenant_id`, `endpoint`, `informativa_versione`.
 

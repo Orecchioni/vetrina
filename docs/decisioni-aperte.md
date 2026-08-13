@@ -46,13 +46,13 @@ Scrivere lo schema ha richiesto di fissare valori che nessuna decisione preceden
 
 Non sono in questo elenco, perché discendono da decisioni già prese e non da una scelta libera: `azienda.telefono` e `whatsapp` annullabili (servono a rendere verificabili le CTA `tel`/`whatsapp` di D6), `azienda.piva` annullabile (D20 è aperta e la P.IVA non c'è), la tabella `TEMPLATE_VARIANTI` (è D10 resa eseguibile).
 
-## Bloccano il Blocco 1 (contratto di ingestion)
+## Bloccano il Blocco 1 (contratto di ingestion) — ✅ tutte chiuse il 2026-08-13
 
 | # | Decisione | Rif. | Raccomandazione | Stato |
 |---|---|---|---|---|
-| D13 | Chi timbra `timestamp` e `ip` dei consensi | L9 | Il server. Il client invia i booleani e la versione dell'informativa mostrata. | aperta |
-| D14 | Anti-abuso sull'endpoint pubblico: rate limit, dimensione massima, endpoint per tenant | L12 | Tutti tre, dentro il contratto. Va chiuso prima del Blocco 4, che mette online un endpoint e lo lascia lì. | aperta |
-| D15 | Beacon di click su `tel:` e WhatsApp, e come tratta l'IP | L15 | Sì, `tipo: "click_contatto"`. **Correzione:** il beacon va allo stesso endpoint che timbra l'IP (D13), e l'IP è dato personale — quindi va su un **percorso/modalità che non conserva l'IP** (è un contatore aggregato, l'IP non serve), altrimenti rientra nell'informativa. Scegliere la prima. Da fissare qui, prima del Blocco 1. | aperta |
+| D13 | Chi timbra `timestamp` e `ip` dei consensi | L9 | **Il server.** Il client invia i booleani e la versione dell'informativa mostrata. Era già normativa nella regola 8 di `CLAUDE.md`: qui si formalizza nel contratto, non si decide da capo. | **decisa 2026-08-13** |
+| D14 | Anti-abuso sull'endpoint pubblico: rate limit, dimensione massima, endpoint per tenant | L12 | **Tutti e tre.** Rate limit **5 richieste ogni 10 minuti per IP**; payload massimo **10 KB**; **endpoint per tenant** è già soddisfatto strutturalmente — ogni `content.json` porta il proprio `ingestion.endpoint`, quindi un abuso su un sito non tocca gli altri per costruzione, non per configurazione aggiuntiva. | **decisa 2026-08-13** |
+| D15 | Beacon di click su `tel:` e WhatsApp, e come tratta l'IP | L15 | Sì, `tipo: "click_contatto"`. **Correzione:** il beacon non timbra né conserva l'IP — è un contatore aggregato per sezione, non una riga con provenienza. Così resta vero che non serve consenso, senza dover ampliare l'informativa per un contatore. | **decisa 2026-08-13** |
 
 ## Bloccano il Blocco 3 (template)
 
