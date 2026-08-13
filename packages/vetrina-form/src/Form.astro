@@ -1,0 +1,218 @@
+---
+import type { ConfigForm } from "@vetrina/schema";
+
+/**
+ * Il componente form condiviso. Nessun template implementa la propria logica
+ * di invio (regola 3): il template passa solo `config` e riceve un form
+ * pronto — campi tipizzati, honeypot, consensi, invio, gestione dell'errore.
+ *
+ * Il template decide quali campi mostrare (attraverso `config`), mai come si spediscono.
+ */
+interface Props {
+  config: ConfigForm;
+  tenantId: string;
+  endpoint: string;
+  informativaVersione: string;
+  informativaUrl: string;
+}
+
+const { config, tenantId, endpoint, informativaVersione, informativaUrl } = Astro.props;
+
+const etichette: Record<string, string> = {
+  nome: "Nome",
+  email: "Email",
+  telefono: "Telefono",
+  messaggio: "Messaggio",
+};
+
+const tipiInput: Record<string, string> = {
+  nome: "text",
+  email: "email",
+  telefono: "tel",
+  messaggio: "text",
+};
+---
+
+<form
+  class="vetrina-form"
+  data-vetrina-form
+  data-config={JSON.stringify(config)}
+  data-tenant-id={tenantId}
+  data-endpoint={endpoint}
+  data-informativa-versione={informativaVersione}
+  novalidate
+>
+  {
+    config.campi_standard.map((chiave) =>
+      chiave === "messaggio" ? (
+        <p>
+          <label for={`vf-${config.id}-${chiave}`}>{etichette[chiave]}</label>
+          <textarea id={`vf-${config.id}-${chiave}`} name={chiave} rows={4} />
+        </p>
+      ) : (
+        <p>
+          <label for={`vf-${config.id}-${chiave}`}>{etichette[chiave]}</label>
+          <input id={`vf-${config.id}-${chiave}`} name={chiave} type={tipiInput[chiave]} />
+        </p>
+      ),
+    )
+  }
+
+  {
+    config.campi_extra.map((extra) =>
+      extra.tipo === "textarea" ? (
+        <p>
+          <label for={`vf-${config.id}-${extra.chiave}`}>{extra.etichetta}</label>
+          <textarea
+            id={`vf-${config.id}-${extra.chiave}`}
+            name={extra.chiave}
+            rows={4}
+            required={extra.obbligatorio}
+          />
+        </p>
+      ) : (
+        <p>
+          <label for={`vf-${config.id}-${extra.chiave}`}>{extra.etichetta}</label>
+          <input
+            id={`vf-${config.id}-${extra.chiave}`}
+            name={extra.chiave}
+            type={extra.tipo}
+            required={extra.obbligatorio}
+          />
+        </p>
+      ),
+    )
+  }
+
+  <p class="vetrina-form__honeypot" aria-hidden="true">
+    <label for={`vf-${config.id}-sito`}>Non compilare questo campo</label>
+    <input id={`vf-${config.id}-sito`} name="sito" type="text" tabindex="-1" autocomplete="off" />
+  </p>
+
+  <p>
+    <label>
+      <input type="checkbox" name="consenso_privacy" required />
+      Ho letto e accetto <a href={informativaUrl} target="_blank" rel="noopener">l'informativa sulla privacy</a> (versione {informativaVersione}).
+    </label>
+  </p>
+
+  <p>
+    <label>
+      <input type="checkbox" name="consenso_marketing" />
+      Voglio ricevere comunicazioni promozionali.
+    </label>
+  </p>
+
+  <p class="vetrina-form__errori" data-vetrina-errori role="alert" hidden></p>
+
+  <button type="submit">Invia</button>
+</form>
+
+<style>
+  .vetrina-form__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .vetrina-form__errori {
+    color: #b3261e;
+  }
+</style>
+
+<script>
+  import { costruisciPayloadSubmission, honeypotCompilato, leggiProvenienza, validazioneMinima } from "./logica.ts";
+  import { invia } from "./invio.ts";
+  import type { ConfigForm } from "@vetrina/schema";
+
+  /**
+   * Un solo listener per ogni `<form data-vetrina-form>` presente nella pagina.
+   * Il template importa questo componente quante volte serve; la logica di invio
+   * resta unica (regola 3), non una copia per form.
+   *
+   * La configurazione arriva dal server via `data-config` (JSON), non ricostruita
+   * dal DOM: ricostruirla perderebbe `campi_extra`, che non ha un modo affidabile
+   * di essere dedotto dai soli nomi degli input.
+   */
+  function inizializza(form: HTMLFormElement): void {
+    const config: ConfigForm = JSON.parse(form.dataset.config ?? "{}");
+
+    const tenantId = form.dataset.tenantId ?? "";
+    const endpoint = form.dataset.endpoint ?? "";
+    const informativaVersione = form.dataset.informativaVersione ?? "";
+
+    const boxErrori = form.querySelector<HTMLElement>("[data-vetrina-errori]");
+
+    function mostraErrori(messaggi: string[]): void {
+      if (!boxErrori) return;
+      if (messaggi.length === 0) {
+        boxErrori.hidden = true;
+        boxErrori.textContent = "";
+        return;
+      }
+      boxErrori.hidden = false;
+      boxErrori.textContent = messaggi.join(" ");
+    }
+
+    form.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+
+      const dati = new FormData(form);
+      const honeypot = dati.get("sito");
+      if (honeypotCompilato(typeof honeypot === "string" ? honeypot : null)) {
+        // Un bot ha compilato il campo nascosto: si scarta senza dire nulla,
+        // né errore né successo, cosi' non impara a evitarlo.
+        return;
+      }
+
+      const valori: Record<string, string> = {};
+      for (const [chiave, valore] of dati.entries()) {
+        if (typeof valore === "string" && chiave !== "sito" && !chiave.startsWith("consenso_")) {
+          valori[chiave] = valore;
+        }
+      }
+
+      const consensoPrivacy = dati.get("consenso_privacy") === "on";
+      const consensoMarketing = dati.get("consenso_marketing") === "on";
+
+      const problemi = validazioneMinima({ config, valori, consensoPrivacy });
+      if (problemi.length > 0) {
+        mostraErrori(problemi);
+        return;
+      }
+
+      mostraErrori([]);
+
+      const payload = costruisciPayloadSubmission({
+        config,
+        tenantId,
+        valori,
+        consensoPrivacy,
+        consensoMarketing,
+        informativaVersione,
+        provenienza: leggiProvenienza(window.location.href),
+      });
+
+      const bottone = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (bottone) bottone.disabled = true;
+
+      invia(endpoint, payload).then((risultato) => {
+        if (bottone) bottone.disabled = false;
+
+        if (risultato.ok) {
+          form.reset();
+          mostraErrori([]);
+          form.dispatchEvent(new CustomEvent("vetrina-form:successo", { bubbles: true }));
+          return;
+        }
+
+        // I dati restano nei campi: non si tocca `form.reset()` su un fallimento.
+        mostraErrori([risultato.messaggio]);
+      });
+    });
+  }
+
+  document.querySelectorAll<HTMLFormElement>("form[data-vetrina-form]").forEach(inizializza);
+</script>

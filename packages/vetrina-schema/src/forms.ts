@@ -67,3 +67,6 @@ export const forms = z
   .refine((f) => new Set(f.map((x) => x.id)).size === f.length, {
     error: "due form hanno lo stesso `id`",
   });
+
+/** Il tipo di una configurazione di form, per chi la consuma senza voler dipendere da zod (es. `@vetrina/form`). */
+export type ConfigForm = z.infer<typeof form>;

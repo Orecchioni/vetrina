@@ -50,3 +50,8 @@ jobs:
             echo "il validatore ha accettato un documento non valido"
             exit 1
           fi
+
+      # Il criterio del Blocco 2: importato in un progetto Astro vuoto, il componente
+      # deve almeno compilare ed essere renderizzato correttamente.
+      - name: Il componente form si builda in un progetto Astro
+        run: pnpm --filter @vetrina/form-demo build

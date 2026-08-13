@@ -1,0 +1,53 @@
+---
+import Form from "@vetrina/form";
+import type { ConfigForm } from "@vetrina/schema";
+
+/**
+ * Progetto Astro vuoto per verificare il Blocco 2: "importato in un progetto
+ * Astro vuoto, il componente spedisce al webhook". Non è l'app commerciale.
+ *
+ * I valori qui sotto rispecchiano `docs/riferimenti/content.example.json`.
+ */
+const config: ConfigForm = {
+  id: "form_prenotazione",
+  sorgente: "prenotazione_hero",
+  campi_standard: ["nome", "email", "telefono"],
+  campi_extra: [
+    { chiave: "data_prenotazione", etichetta: "Data", tipo: "date", obbligatorio: true },
+    { chiave: "orario", etichetta: "Orario", tipo: "time", obbligatorio: true },
+    { chiave: "num_persone", etichetta: "Numero di persone", tipo: "number", obbligatorio: true },
+  ],
+  consenso_privacy: true,
+  consenso_marketing: true,
+};
+---
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <title>Demo componente form — Vetrina</title>
+  </head>
+  <body>
+    <h1>Prenota un tavolo</h1>
+
+    <Form
+      config={config}
+      tenantId="tnt_8f2a91c4"
+      endpoint="https://hook.eu1.make.com/7fvl4fx9iqgz0ddcyfhwafidbvhvnyc6"
+      informativaVersione="2026-08-v1"
+      informativaUrl="/privacy"
+    />
+
+    <p><a href="tel:+390612345">Chiamaci</a> · <a href="https://wa.me/393331234567">Scrivici su WhatsApp</a></p>
+
+    <script>
+      import { agganciaBeacon } from "@vetrina/form/beacon";
+
+      agganciaBeacon(document, {
+        endpoint: "https://hook.eu1.make.com/7fvl4fx9iqgz0ddcyfhwafidbvhvnyc6",
+        tenantId: "tnt_8f2a91c4",
+        sezione: "hero",
+      });
+    </script>
+  </body>
+</html>

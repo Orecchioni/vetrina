@@ -1,0 +1,30 @@
+{
+  "name": "@vetrina/form",
+  "version": "0.1.0",
+  "description": "Componente form condiviso: unico punto che sa come si spedisce una submission all'endpoint di ingestion.",
+  "type": "module",
+  "exports": {
+    ".": "./src/Form.astro",
+    "./logica": "./src/logica.ts",
+    "./invio": "./src/invio.ts",
+    "./beacon": "./src/beacon.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@vetrina/schema": "workspace:*"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5"
+  }
+}

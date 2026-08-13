@@ -2,13 +2,15 @@
 
 Siti one-page standardizzati per categorie di PMI italiane, con personalizzazione guidata e pipeline di generazione automatizzata.
 
-**Stato:** Blocco 0 chiuso — schema, tipi e validatore in `packages/vetrina-schema`. Il prossimo è il Blocco 1, il contratto di ingestion.
+**Stato:** Blocco 0 e Blocco 2 chiusi. Blocco 1 verificato per la parte principale (submission valida, payload malformato); rate limit e beacon lato server rimandati a prima del Blocco 4. Il prossimo è il Blocco 3, il template ristorante.
 
 ## Pacchetti
 
 | | |
 |---|---|
 | [`packages/vetrina-schema`](packages/vetrina-schema) | Schema Zod del `content.json`, tipi derivati, CLI `vetrina-validate`. Fonte unica di verità |
+| [`packages/vetrina-form`](packages/vetrina-form) | Componente form condiviso: campi, honeypot, consensi, invio, beacon di click |
+| `apps/vetrina-form-demo` | Progetto Astro minimo per verificare `vetrina-form` — non è l'app commerciale (quella è al Blocco 5) |
 
 ```sh
 pnpm install

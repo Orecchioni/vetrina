@@ -29,7 +29,7 @@ export { formattaErrore, problemiDi, type Problema } from "./errori.js";
 export { valida, validaOLancia, validaTesto, type Esito } from "./valida.js";
 
 export { azienda, indirizzo, logo, social } from "./azienda.js";
-export { campoExtra, form, forms } from "./forms.js";
+export { campoExtra, form, forms, type ConfigForm } from "./forms.js";
 export { fascia, giorno, settimana } from "./orari.js";
 export {
   azione,
