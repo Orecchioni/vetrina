@@ -78,20 +78,28 @@ L'ordine è quello del piano di sviluppo, con l'aggiunta della Fase 0, la divisi
 
 ### Fase B — Il primo prodotto
 
+**Cambiamento rispetto al piano originale (D44):** il Blocco 5a non apre con un solo template, ma con **circa dieci-dodici**, distribuiti su **dieci etichette** (`template.categoria_attivita`: ristorante, studio dentistico, parrucchiere...) — la maggior parte delle etichette con un solo template, un paio con due design diversi (stessa etichetta, `template.id` diverso; il campo lo supporta già, come `variante` fa a un livello più fine per D10). Motivo: la domanda filtro del §6.1 ("che tipo di attività hai?") non è una domanda vera con una sola etichetta disponibile; il sito commerciale ha bisogno di più scelte per funzionare come progettato. Il costo è basso — un template one-page è lavoro da un pomeriggio — quindi non si ripropone la tensione del §14.5 nella stessa forma in cui vale per un lavoro di mesi.
+
 | Blocco | Cosa | Lacune da incorporare |
 |---|---|---|
-| **3** | Template ristorante | L11 L13 L14 L21 L24 L29 L31 |
+| **3** | Primo template — ristorante | L11 L13 L14 L21 L24 L29 L31 |
+| **3-bis** | Secondo template — etichetta diversa (es. studio dentistico) ← **checkpoint dello scheletro condiviso** | Criterio del Blocco 11 (§11 originale), spostato qui |
+| **3-ter…** | Restanti template fino a dieci-dodici, secondo le etichette e le doppie varianti decise di volta in volta | Solo se il checkpoint di 3-bis è passato |
 | **4** | Demo pubblicata ← **primo checkpoint reale** | L13 L30 |
-| **5a** | Vetrina commerciale senza incasso | L16 |
+| **5a** | Vetrina commerciale senza incasso, con i dieci verticali selezionabili tramite la domanda filtro | L16 |
 | **5a-bis** | Copione di consegna manuale (non-codice) | L33 D37 |
 
 **Blocco 3 — fatto quando:** cambiando solo il `content.json` esce un sito visibilmente diverso; disattivando `gallery`, `testimonianze`, `chi_siamo`, `orari` e `cta_finale` il layout resta coerente; le pagine `/privacy` e `/cookie` esistono e nessun link del footer è rotto; il build fallisce se il `content.json` non passa il validatore; il build fallisce se `informativa_versione` non esiste nel pacchetto; il check in CI sui letterali passa; nessun cookie di terze parti viene impostato.
 
-**Blocco 4 — fatto quando:** è online con asset locali (lo stesso percorso della consegna), Lighthouse ≥ 90 su performance/accessibilità/SEO — mobile, throttling di default, su tutte le route generate — il form genera una riga reale nello Sheet, e si apre dal telefono senza vergognarsi di mostrarla.
+**Blocco 3-bis — fatto quando:** il secondo verticale è costruito in **meno di un quinto del tempo** impiegato per il primo, riusando lo scheletro condiviso, il componente form e lo schema senza modificarli. Se non è così, ci si ferma: si rivede lo scheletro prima di replicare il problema sugli altri otto-dieci template previsti. Questo criterio, spostato qui da quello che era il Blocco 11 nel piano originale, è la verifica che il disegno "sezioni fisse + schema unico" regge su un verticale diverso dal ristorante — non solo teoricamente (L5, L22), ma misurata sul secondo pomeriggio, non sull'ottavo.
+
+**Blocco 3-ter…3-decies — fatto quando:** stesso criterio del 3-bis, applicato una volta per ciascuno degli altri otto verticali. Nessuna sorpresa attesa se il 3-bis è passato: è ripetizione, non scoperta.
+
+**Blocco 4 — fatto quando:** è online con asset locali (lo stesso percorso della consegna), Lighthouse ≥ 90 su performance/accessibilità/SEO — mobile, throttling di default, su tutte le route generate — il form genera una riga reale nello Sheet, e si apre dal telefono senza vergognarsi di mostrarla. Vale per il template ristorante; gli altri nove seguono lo stesso criterio prima di considerarsi pronti per il Blocco 5a.
 
 **Da qui in poi vale il presidio del tempo del §14.5, con il numero di ore fissato in D23 prima di arrivare qui.**
 
-**Blocco 5a — fatto quando:** è online, il form funziona, l'analytics registra le visite e Search Console è verificata.
+**Blocco 5a — fatto quando:** è online, il form funziona, l'analytics registra le visite, Search Console è verificata, e la domanda filtro propone almeno i dieci verticali costruiti.
 
 **Da questo punto si inizia a contattare.** L'intake per i primi clienti si fa a mano via email: è lento e va benissimo, perché i primi clienti servono a dire cosa automatizzare. La Fase C prima di aver parlato con qualcuno è il modo in cui il secondo obiettivo del progetto fallisce in silenzio.
 
@@ -113,9 +121,7 @@ Non si apre prima di aver parlato con clienti reali. L'ordine interno può cambi
 | Blocco | Cosa | Lacune |
 |---|---|---|
 | **10** | Pubblicazione e migrazione asset | L13 L18 |
-| **11** | Secondo template | L5 L22 |
-
-**Blocco 11 — fatto quando:** è costruito in meno di un quinto del tempo del primo. Se non è così, lo scheletro condiviso non funziona come previsto: fermarsi e rivederlo prima di costruirne altri. Questo criterio è anche la verifica a posteriori di L5 e L22.
+| ~~11~~ | ~~Secondo template~~ — anticipato al Blocco 3-bis (D44): con dieci verticali prima del Blocco 5a, il checkpoint sul secondo template non può aspettare la Fase D | L5 L22 |
 
 ---
 

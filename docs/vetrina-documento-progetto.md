@@ -302,22 +302,25 @@ L'ordine effettivo è nel `processo-sviluppo.md`. Qui la versione aggiornata ris
 | 0 | Schema `content.json` + validatore | Un JSON malformato viene rifiutato con errore leggibile; il validatore gira in CI |
 | 1 | Contratto di ingestion + webhook Make | Un POST conforme produce una riga nello Sheet e una mail |
 | 2 | Componente form condiviso | Un POST dal componente arriva al webhook con consensi e UTM corretti |
-| 3 | Template ristorante, data-driven | Il sito si costruisce interamente da `content.json`, zero contenuto nel codice |
+| 3 | Primo template — ristorante, data-driven | Il sito si costruisce interamente da `content.json`, zero contenuto nel codice |
+| 3-bis | Secondo template — verticale diverso ← **checkpoint dello scheletro** | Costruito in meno di un quinto del tempo del primo, senza toccare schema, form o scheletro |
+| 3-ter…3-decies | Verticali 3-10 | Stesso criterio del 3-bis, uno per verticale |
 | 4 | Demo pubblicata ← **primo checkpoint reale** | La demo è online, Lighthouse ≥ 90, il form genera un lead reale |
-| 5a | Vetrina commerciale senza incasso | Prezzo esposto, demo navigabile, form funzionante — **non richiede P.IVA** |
+| 5a | Vetrina commerciale senza incasso, con i dieci verticali selezionabili | Prezzo esposto, demo navigabile, form funzionante — **non richiede P.IVA** |
 | 5b | Vetrina con checkout | Richiede P.IVA e provider di pagamento. In sospeso finché la P.IVA non è aperta. |
 | 6 | Intake guidato | Un utente esterno completa l'intake senza spiegazioni e produce un JSON valido |
 | 7 | Pagamento | L'acconto sblocca l'intake; il saldo sblocca la pubblicazione. Dipende da 5b. |
 | 8 | Pipeline Make fino a preview | Un intake completo produce un URL di preview senza intervento manuale |
 | 9 | Generazione testi via API Claude | I testi prodotti sono usabili senza riscrittura nell'80% dei casi |
 | 10 | Migrazione asset e pubblicazione | Un sito pubblicato non dipende più dallo storage esterno |
-| 11 | Secondo template | Costruito riusando lo schema, in meno di un quinto del tempo del primo |
 
 **Il passo 4 è il primo punto di verifica reale.** Da lì esiste qualcosa da mostrare, e da lì in poi va tenuta attiva una quota di tempo sull'acquisizione.
 
-**Sul 5a vs 5b:** la vetrina senza incasso (5a) si costruisce subito dopo la demo. Il checkout (5b) si aggiunge quando la P.IVA è aperta. I primi clienti si gestiscono a mano nel frattempo — l'intake per loro è una checklist via email, non un sistema automatizzato.
+**Sul 5a vs 5b:** la vetrina senza incasso (5a) si costruisce subito dopo che tutti i verticali sono pronti. Il checkout (5b) si aggiunge quando la P.IVA è aperta. I primi clienti si gestiscono a mano nel frattempo — l'intake per loro è una checklist via email, non un sistema automatizzato.
 
-**Nota di realismo:** con ~10 ore/settimana i passi 0-4 sono questione di settimane. I passi 0-4 più 5a costituiscono già un asset utile e vendibile: un template data-driven, una demo online, una vetrina con prezzo esposto e un modo di consegnare a mano.
+**Su dieci-dodici template prima del 5a (D44):** il piano originale prevedeva di lanciare con un solo template. Cambiato perché la domanda filtro del §6.1 ("che tipo di attività hai?") non funziona con una sola etichetta disponibile — non è una domanda se c'è una sola risposta possibile. Il costo resta basso: un template one-page è lavoro da un pomeriggio. Il presidio è il passo 3-bis: il secondo template valida che lo scheletro condiviso regga su un'attività diversa dal ristorante *prima* di replicarlo sugli altri, non dopo.
+
+**Nota di realismo:** con ~10 ore/settimana i passi 0-2 sono questione di settimane. I passi 3–3-decies allungano i tempi rispetto al piano originale (dieci verticali invece di uno), ma restano ore, non mesi, se ogni template resta effettivamente lavoro da un pomeriggio come verificato al passo 3-bis. Se non lo è, il 3-bis lo dice prima di aver speso il tempo per tutti e dieci.
 
 ---
 
