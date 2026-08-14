@@ -1,8 +1,18 @@
 # Vetrina — stato di avanzamento
 
-**Aggiornato:** 13 agosto 2026
+**Aggiornato:** 14 agosto 2026
 
 ## Dove siamo
+
+**Blocco 3 — Primo template (ristorante): chiuso.** [`orecchioni/template-ristorante`](https://github.com/orecchioni/template-ristorante), repo autonomo come da D1. Sito one-page interamente guidato da `content.json`: nove sezioni in ordine fisso, una per componente. D16–D19 implementate; aggiunte D34 (dati strutturati `schema.org/Restaurant`) e L29 (sitemap, robots).
+
+**Tutti e sette i criteri del blocco verificati con build vere (14/08):** un `content.json` diverso produce un sito visibilmente diverso; disattivando `gallery`, `testimonianze`, `chi_siamo`, `orari` e `cta_finale` restano le tre sezioni non disattivabili e il layout regge; `/privacy` e `/cookie` esistono senza link rotti; il build fallisce su `content.json` non valido e su `informativa_versione` inesistente, con errore leggibile in entrambi i casi; il check sui letterali passa in CI; nessuna richiesta a terze parti nell'output — non solo nessun cookie.
+
+**Il check sui letterali (D19) aveva due bug, trovati provandolo invece di fidarsene:** scansionava anche i commenti (falsi positivi sulla documentazione) e — molto peggio — non copriva affatto il testo diretto fra tag HTML, cioè il modo più comune in cui un contenuto finirebbe hardcoded in Astro. Scoperto iniettando un titolo finto in `Footer.astro` e vedendo il check passare lo stesso. Corretto e riverificato con la stessa iniezione.
+
+**Come `template-ristorante` consuma i pacchetti: vendorizzati, non da git.** Prima si era scelta una dipendenza git pinnata a un commit, verificata empiricamente nel container. Si è rotta sulla macchina dell'utente (Windows): pnpm 11 ha sostituito `onlyBuiltDependencies` con `allowBuilds`, e l'installazione annidata per compilare il pacchetto al volo si intrecciava con le dipendenze dell'intero progetto. Sostituita con copie in `vendor/` referenziate come dipendenze `file:` — zero rete, zero installazioni annidate, uguale ovunque. **Verificato sulla macchina dell'utente (14/08):** `pnpm install` pulito, `pnpm run dev` su, sito servito a `localhost:4321`. Il risync è documentato in `vendor/README.md`.
+
+**La CI di `vetrina` non era mai passata prima del 14/08.** Falliva su ogni push dal Blocco 0, in undici secondi, prima ancora dell'install: `pnpm/action-setup@v4` richiede la versione dichiarata in `packageManager` e mancava. Non era mai stata guardata su GitHub — solo eseguita in locale — e i commit dicevano «CI aggiunta, gira su ogni push». Lo stesso bug esisteva in `template-ristorante`. Corretto in entrambi: run verdi su `d29736a` (vetrina) e `c25c640` (template). **Regola che ne consegue, ora in entrambi i `CLAUDE.md`: la CI si verifica sul remoto, non si dà per buona.**
 
 **Cambio di scopo deciso (D44):** il Blocco 5a non apre più con un solo template. Apre con **circa dieci-dodici**, distribuiti su dieci etichette (`template.categoria_attivita`) — la maggior parte con un solo template, un paio con due design diversi. Motivo: la domanda filtro del §6.1 non è una domanda vera con una sola etichetta disponibile. Nessuna modifica allo schema: `template.id` e `template.categoria_attivita` erano già due campi distinti dal Blocco 0. Il vecchio Blocco 11 ("secondo template, meno di un quinto del tempo del primo") diventa **Blocco 3-bis**, eseguito subito dopo il primo template — non alla fine — per validare lo scheletro condiviso prima di replicarlo molte volte. Dettagli in `decisioni-aperte.md` (D44) e `processo-sviluppo.md` §4.
 
@@ -41,11 +51,13 @@ Il criterio è verificato per intero: il validatore accetta `content.example.jso
 
 | Blocco | Stato | Nota |
 |---|---|---|
-| Fase 0 — Accordo | **chiusa** | 0.1 decisioni ✅ · 0.2 allineamento documenti ✅ · 0.3 esempio aggiornato ✅ · 0.4 CLAUDE.md monorepo fatto (template da fare al Blocco 3) |
+| Fase 0 — Accordo | **chiusa** | 0.1 decisioni ✅ · 0.2 allineamento documenti ✅ · 0.3 esempio aggiornato ✅ · 0.4 CLAUDE.md ✅ (monorepo e template) |
 | 0 — Schema e validatore | **chiuso** | `packages/vetrina-schema`: schema, tipi, CLI `vetrina-validate`, 51 test, CI su Node 20 e 22 |
 | 1 — Contratto di ingestion | **verificato in parte** | Submission valida e payload malformato confermati contro Make vero. Restano rate limit e ramo beacon, da chiudere prima del Blocco 4 |
 | 2 — Componente form | **chiuso** | `packages/vetrina-form`: logica, componente, beacon, 25 test, build Astro verificata, invio reale confermato in browser |
-| 3 — Template ristorante | **pronto a partire** | |
+| 3 — Template ristorante | **chiuso** | `template-ristorante`: nove sezioni, D16–D19, due controlli prima del build, CI verde. Vendorizzazione verificata su Windows |
+| 3-bis — Secondo template | **pronto a partire** | Checkpoint: meno di un quinto del tempo del primo, senza toccare scheletro, form e schema |
+| 3-ter… — Restanti template | non iniziato | Solo se 3-bis passa |
 | 4 — Demo pubblicata | non iniziato | Primo checkpoint reale |
 | 5a — Vetrina commerciale | non iniziato | Da qui si contatta gente |
 | 6 — Intake guidato | non iniziato | Non prima di aver parlato con clienti reali |
@@ -53,7 +65,7 @@ Il criterio è verificato per intero: il validatore accetta `content.example.jso
 | 8 — Pipeline fino a preview | non iniziato | |
 | 9 — Generazione testi | non iniziato | |
 | 10 — Pubblicazione | non iniziato | |
-| 11 — Secondo template | non iniziato | |
+| ~~11 — Secondo template~~ | — | Anticipato a 3-bis (D44) |
 
 ## Presidio del tempo (§14.5)
 
@@ -75,4 +87,6 @@ Si attiva dal Blocco 4. La quota va fissata come numero in **D23** prima di arri
 | 2026-08-13 | Blocco 1 | Chiuse D13, D14, D15. Scritto `docs/riferimenti/contratto-ingestion.md`. §8 del documento di progetto aggiornato per rimandarci. |
 | 2026-08-13 | Blocco 1 cont. | Costruito lo scenario Make (`Integration Webhooks`) sull'account dell'utente, guidato passo passo: webhook custom, Router con filtri su `tipo`, timbratura di `ricevuto_il`/`ip` (scoperto che l'IP vero sta in `cf-connecting-ip`, non in `x-real-ip`, perché Make sta dietro Cloudflare), scrittura su Google Sheet, notifica email al titolare (non al cliente — corretto un errore di mappatura), risposta `{"ok": true}` con status 200. Aggiunto un ramo di fallback per le submission senza consenso privacy, che risponde 400 con errore leggibile — scoperto che un campo assente non soddisfa un confronto "diverso da" in Make, va trattato come fallback. Verificati con curl: submission conforme e payload malformato. Non costruiti: rate limit (formula a finestra temporale rimandata, non blocca nulla finché l'endpoint non è pubblico) e ramo beacon. |
 | 2026-08-13 | Blocco 2 | `packages/vetrina-form`: `logica.ts` (costruzione payload, honeypot, provenienza UTM, validazione minima), `invio.ts` (fetch con `fetch` iniettabile per i test, nessun'eccezione mai lanciata), `beacon.ts` (click su `tel:`/WhatsApp), `Form.astro`. Aggiunto `ConfigForm` come tipo esportato da `vetrina-schema` per non far dipendere `vetrina-form` da zod solo per un tipo. 25 test; verificata la tenuta rompendo di proposito la gestione dell'errore di rete. Creata `apps/vetrina-form-demo`, un'app Astro minima (non l'app commerciale) che importa il componente: `astro check` e `astro build` puliti, ora anche in CI. Due bug trovati e corretti scrivendo il componente: `campi_extra` si perdeva se lo script client lo ricostruiva dal DOM invece di riceverlo come JSON dal server; un campo extra `textarea` produceva un `<input type="textarea">` invalido. |
+| 2026-08-14 | Blocco 3 | Costruito `template-ristorante` (repo autonomo, D1): nove sezioni una per componente, `src/lib/` per tema, informativa versionata, dati strutturati e markdown minimo, `/privacy`, `/cookie`, `favicon.svg` generata dall'iniziale, `sitemap.xml`. Due controlli prima del build: validazione di `content.json` e `check-letterali.mjs` (D19), quest'ultimo corretto due volte dopo averlo provato — ignorava i commenti e, soprattutto, non vedeva il testo fra tag HTML. Tutti e sette i criteri del blocco verificati con build vere, casi negativi inclusi. Scritto il `CLAUDE.md` del template, che chiude la Fase 0.4. |
+| 2026-08-14 | Blocco 3 cont. | Abbandonata la dipendenza git verso i pacchetti del monorepo dopo che si è rotta su Windows (pnpm 11 `allowBuilds`, installazione annidata intrecciata con le dipendenze del progetto): sostituita con vendorizzazione in `vendor/` via `file:`. Verificata sulla macchina dell'utente, non solo nel container. Scoperto che la CI di **entrambi** i repo falliva da sempre (`packageManager` mancante per `pnpm/action-setup@v4`) senza che nessuno l'avesse mai guardata su GitHub: corretta, entrambe verdi. Aggiunta la regola «la CI si verifica sul remoto» a entrambi i `CLAUDE.md`. |
 | 2026-08-12 | Fase 0.3 | `content.example.json` aggiornato: `leadhub` → `ingestion` con endpoint webhook Make; `azienda.logo: null`; `consenso_privacy: true` in entrambi i form; CTA come unione discriminata (`tipo: form/ancora`); `fonte: "cliente"` su tutti gli oggetti immagine; `hero.sfondo: null` e `cta_finale.sfondo: null`; `prezzo_nota` aggiunto su ogni voce; un secondo con `prezzo: null, prezzo_nota: "s.q."`; `generazione.modello` rimosso; `testimonianze.voci` senza `fonte` esterna. Fase 0 chiusa. |

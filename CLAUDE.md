@@ -45,6 +45,7 @@ Il vincolo del piano resta soddisfatto: il repo del cliente è una copia di `tem
 
 - **Un blocco alla volta, in ordine.** Non anticipare blocchi successivi. Non implementare cose non richieste dal blocco corrente, nemmeno se sembrano ovvie: `§9` del documento di progetto elenca ciò che è fuori scope, e «sarebbe utile» non è un criterio.
 - **Un blocco è chiuso con una prova concreta**, incluso il caso negativo. Vedi `processo-sviluppo.md` §2.
+- **La CI si verifica sul remoto, non si dà per buona.** È fallita su ogni push dal Blocco 0 al Blocco 3 senza che nessuno la guardasse su GitHub, mentre i commit dichiaravano il contrario. Una CI che non è stata vista passare non è una prova.
 - **Se una decisione del documento di progetto si rivela sbagliata, fermarsi e segnalarlo** invece di aggirarla nel codice.
 - **In dubbio fra aggiungere un campo o costruire un meccanismo: aggiungere il campo.** Il campo costa una riga, il meccanismo costa un blocco.
 - **Commit** che nomina il blocco: `blocco-0: …`.
