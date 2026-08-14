@@ -32,6 +32,7 @@ export const social = z
   .object({
     instagram: urlPubblico.nullable(),
     facebook: urlPubblico.nullable(),
+    linkedin: urlPubblico.nullable(),
     tripadvisor: urlPubblico.nullable(),
   })
   .strict();

@@ -52,6 +52,7 @@ export const TONI = ["familiare", "professionale", "contemporaneo"] as const;
  */
 export const TEMPLATE_VARIANTI: Record<string, readonly string[]> = {
   ristorante: ["trattoria"],
+  "studio-professionale": ["avvocato"],
 };
 
 /** Set chiuso dei tag di voce (D5). Cresce con un minor di schema, senza rompere nulla. */

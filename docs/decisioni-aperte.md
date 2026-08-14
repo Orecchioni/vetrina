@@ -63,6 +63,14 @@ Non sono in questo elenco, perché discendono da decisioni già prese e non da u
 | D18 | Pagine `/privacy` e `/cookie` come eccezione dichiarata a §9, testo versionato nel pacchetto | L11 | **Sì**, con build che fallisce se `informativa_versione` non esiste nel pacchetto. | **decisa 2026-08-13** |
 | D19 | Check in CI contro i letterali di contenuto nel sorgente | L24 | **Sì.** Mezz'ora per rendere vincolo la regola numero uno. | **decisa 2026-08-13** |
 
+## Emerse dal Blocco 3-bis (secondo template)
+
+| # | Decisione | Rif. | Raccomandazione | Stato |
+|---|---|---|---|---|
+| D45 | `azienda.social` conteneva `tripadvisor` come chiave fissa e nessun `linkedin` | D44, regola «campo, non meccanismo» | **Aggiunto `linkedin`.** Il buco è emerso al primo verticale non-ristorante: per uno studio legale LinkedIn è l'unico social che conta, Instagram e TripAdvisor quasi mai. Aggiunto `linkedin: urlPubblico.nullable()` in `azienda.ts`, propagato a `content.example.json`, al `content.json` di `template-ristorante` (`null`) e al `Footer.astro` di **entrambi** i template — il campo nello schema senza il rendering nel componente è una mezza modifica, e infatti il primo build lo ha mostrato: LinkedIn valorizzato e footer vuoto. **Non** si è costruito un meccanismo di social generici (lista di `{rete, url}`): con quattro reti note il costo di un campo è una riga, quello di un meccanismo è un blocco. Si rivedrà se un verticale futuro chiede una quinta rete. | **decisa 2026-08-14** |
+
+**Non è stato necessario toccare lo schema per:** `voce.tag` (D5, enum di attributi alimentari) — resta vuoto nei verticali non alimentari, lo schema non impone di popolarlo; `template.id`/`categoria_attivita` — già distinti (D44); le nove sezioni e il componente form — invariati. `TEMPLATE_VARIANTI` si estende di una riga per template, come previsto da D10: non è una modifica di struttura, è il registro che fa il suo lavoro.
+
 ## Bloccano il Blocco 5 (vetrina commerciale)
 
 | # | Decisione | Rif. | Raccomandazione | Stato |
