@@ -1,0 +1,274 @@
+---
+import Base from "../../layout/Base.astro";
+import { CATALOGO } from "../../dati/catalogo.ts";
+import { percorsoDemo } from "../../dati/demo.ts";
+import { NOME_PRODOTTO, PREZZO } from "../../dati/config.ts";
+
+/**
+ * La "pagina template con demo navigabile reale" del §6.1.
+ *
+ * Il template non è un sito a sé: è mostrato **dentro** la vetrina, in un
+ * riquadro, con intorno il contesto commerciale (cosa include, prezzo, come
+ * si procede). Chi guarda non esce dal sito e non deve tornare indietro col
+ * pulsante del browser — resta nel percorso di acquisto.
+ */
+export function getStaticPaths() {
+  return CATALOGO.flatMap((categoria) =>
+    categoria.template
+      .filter((t) => t.demo !== null)
+      .map((t) => ({
+        params: { slug: t.demo! },
+        props: { template: t, categoria },
+      })),
+  );
+}
+
+const { template, categoria } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const urlDemo = percorsoDemo(base, template.demo!);
+---
+
+<Base
+  titolo={`${template.nome} — anteprima del template | ${NOME_PRODOTTO}`}
+  descrizione={template.descrizione}
+>
+  <section class="testata">
+    <div class="contenitore">
+      <p class="testata__categoria">
+        <a href={`${base}#categorie`}>← Tutti i template</a>
+      </p>
+      <div class="testata__riga">
+        <div>
+          <h1 class="testata__titolo">{template.nome}</h1>
+          <p class="testata__categoria-nome">{categoria.etichetta}</p>
+        </div>
+        <div class="testata__azione">
+          <span class="testata__prezzo">{PREZZO.valuta}{PREZZO.cifra}</span>
+          <a class="bottone" href={`${base}#contatto`}>Voglio questo sito</a>
+        </div>
+      </div>
+      <p class="testata__descrizione">{template.descrizione}</p>
+    </div>
+  </section>
+
+  <section class="anteprima">
+    <div class="contenitore">
+      <div class="anteprima__barra">
+        <span class="anteprima__etichetta">Anteprima navigabile — i contenuti mostrati sono di esempio</span>
+        <div class="anteprima__viste" role="group" aria-label="Dimensione anteprima">
+          <button type="button" class="vista vista--attiva" data-vista="desktop">Computer</button>
+          <button type="button" class="vista" data-vista="mobile">Telefono</button>
+        </div>
+      </div>
+
+      <div class="anteprima__telaio" data-telaio>
+        <iframe
+          class="anteprima__iframe"
+          src={urlDemo}
+          title={`Anteprima del template ${template.nome}`}
+          loading="lazy"
+        ></iframe>
+      </div>
+
+      <p class="anteprima__nota">
+        <a href={urlDemo} target="_blank" rel="noopener">Apri l'anteprima a schermo intero ↗</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="chiusura">
+    <div class="contenitore chiusura__interno">
+      <h2 class="chiusura__titolo">Ti piace questo template?</h2>
+      <p class="chiusura__testo">
+        Lo costruiamo sui tuoi contenuti: le tue foto, i tuoi servizi, i tuoi
+        orari. Scrivici e ti spieghiamo come funziona, senza impegno.
+      </p>
+      <a class="bottone bottone--grande" href={`${base}#contatto`}>Richiedi il tuo sito</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .testata {
+    padding-block: clamp(1.5rem, 4vw, 2.5rem);
+    border-bottom: 1px solid var(--bordo);
+  }
+  .testata__categoria {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+  }
+  .testata__categoria a {
+    color: var(--tenue);
+    text-decoration: none;
+  }
+  .testata__categoria a:hover {
+    color: var(--testo);
+  }
+  .testata__riga {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .testata__titolo {
+    font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+    color: var(--primario);
+    margin: 0 0 0.25rem;
+  }
+  .testata__categoria-nome {
+    margin: 0;
+    color: var(--tenue);
+    font-size: 0.95rem;
+  }
+  .testata__azione {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .testata__prezzo {
+    font-family: var(--font-titolo);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primario);
+  }
+  .testata__descrizione {
+    margin: 1rem 0 0;
+    color: var(--tenue);
+    max-width: 46rem;
+  }
+
+  .anteprima {
+    padding-block: clamp(1.5rem, 4vw, 2.5rem);
+    background: color-mix(in srgb, var(--primario) 5%, var(--sfondo));
+  }
+  .anteprima__barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .anteprima__etichetta {
+    font-size: 0.85rem;
+    color: var(--tenue);
+  }
+  .anteprima__viste {
+    display: flex;
+    gap: 0.4rem;
+  }
+  .vista {
+    padding: 0.35rem 0.8rem;
+    font: inherit;
+    font-size: 0.85rem;
+    background: var(--superficie);
+    border: 1px solid var(--bordo);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .vista--attiva {
+    background: var(--primario);
+    border-color: var(--primario);
+    color: #fff;
+  }
+
+  /*
+   * Il telaio è ciò che rende evidente che si sta guardando un'anteprima
+   * dentro la vetrina, non navigando un altro sito: bordo, ombra e sfondo
+   * la incorniciano invece di farla sembrare la pagina stessa.
+   */
+  .anteprima__telaio {
+    background: var(--superficie);
+    border: 1px solid var(--bordo);
+    border-radius: 0.6rem;
+    overflow: hidden;
+    box-shadow: 0 8px 30px color-mix(in srgb, var(--testo) 10%, transparent);
+    margin-inline: auto;
+    width: 100%;
+    max-width: 100%;
+    transition: max-width 0.25s ease;
+  }
+  .anteprima__telaio[data-modo="mobile"] {
+    max-width: 24rem;
+  }
+  .anteprima__iframe {
+    display: block;
+    width: 100%;
+    height: min(78vh, 46rem);
+    border: 0;
+  }
+  .anteprima__nota {
+    margin: 0.75rem 0 0;
+    font-size: 0.85rem;
+    text-align: right;
+  }
+  .anteprima__nota a {
+    color: var(--tenue);
+  }
+
+  .chiusura {
+    padding-block: clamp(3rem, 8vw, 4.5rem);
+  }
+  .chiusura__interno {
+    max-width: 42rem;
+  }
+  .chiusura__titolo {
+    font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+    color: var(--primario);
+    margin: 0 0 0.75rem;
+  }
+  .chiusura__testo {
+    color: var(--tenue);
+    margin: 0 0 1.75rem;
+  }
+
+  .bottone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: 0.8rem 1.75rem;
+    background: var(--accento);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    transition: transform 0.12s ease, box-shadow 0.15s ease;
+  }
+  .bottone:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--accento) 35%, transparent);
+  }
+  .bottone--grande {
+    font-size: 1.1rem;
+    padding: 0.95rem 2.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anteprima__telaio,
+    .bottone {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  /*
+   * Le due viste dell'anteprima: restringere il telaio è sufficiente perché
+   * il template è mobile-first e reagisce alla larghezza reale dell'iframe,
+   * senza bisogno di ricaricarlo o di emulare un dispositivo.
+   */
+  const telaio = document.querySelector<HTMLElement>("[data-telaio]");
+  const viste = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-vista]"));
+
+  for (const bottone of viste) {
+    bottone.addEventListener("click", () => {
+      const modo = bottone.dataset.vista ?? "desktop";
+      if (telaio) telaio.dataset.modo = modo;
+      for (const altro of viste) altro.classList.toggle("vista--attiva", altro === bottone);
+    });
+  }
+</script>

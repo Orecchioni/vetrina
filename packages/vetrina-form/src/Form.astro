@@ -159,6 +159,15 @@ const tipiInput: Record<string, "text" | "email" | "tel"> = {
     form.addEventListener("submit", (evento) => {
       evento.preventDefault();
 
+      // Anteprima incorporata nella vetrina (§6.1): il template e' solo
+      // visualizzabile, i suoi form non spediscono nulla. Il flag e' impostato
+      // a build-time solo quando il workflow della vetrina compila questo
+      // template come demo sotto /demo/<slug>/ — assente in locale e nel repo
+      // consegnato al cliente, dove il form funziona come sempre.
+      if (import.meta.env.PUBLIC_DEMO_MODE === "true") {
+        return;
+      }
+
       const dati = new FormData(form);
       const honeypot = dati.get("sito");
       if (honeypotCompilato(typeof honeypot === "string" ? honeypot : null)) {

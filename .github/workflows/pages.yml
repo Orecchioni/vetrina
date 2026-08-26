@@ -42,6 +42,69 @@ jobs:
           SITE_BASE: /vetrina/
         run: pnpm --filter @vetrina/sito run build
 
+      # I repo template NON sono siti pubblicati: sono sorgenti trasferibili
+      # (D1), che diventano un sito solo quando vengono consegnati a un
+      # cliente sul suo dominio. Per mostrarli come anteprime navigabili
+      # (§6.1) li si clona e compila qui, dentro l'unico sito che esiste
+      # davvero — la vetrina — sotto /demo/<slug>/.
+      #
+      # L'elenco è in apps/vetrina/src/dati/demo.ts ed è la stessa lista che
+      # le pagine usano per costruire gli iframe: un verticale nuovo è una
+      # riga sola, non due posti da tenere allineati.
+      - name: Compila i template come anteprime sotto /demo/
+        run: |
+          set -euo pipefail
+
+          # Legge slug/repo/ramo da demo.ts senza dipendere da un parser TS:
+          # il file è dati, non logica, e il formato è stabile.
+          node -e '
+            const src = require("fs").readFileSync("apps/vetrina/src/dati/demo.ts", "utf8");
+            const blocchi = src.match(/\{\s*slug:[\s\S]*?\}/g) ?? [];
+            const righe = blocchi.map((b) => {
+              const g = (k) => (b.match(new RegExp(k + ':\\s*"([^"]+)"')) ?? [])[1];
+              return [g("slug"), g("repo"), g("ramo")].join(" ");
+            });
+            if (righe.length === 0) throw new Error("nessuna demo trovata in demo.ts");
+            console.log(righe.join("\n"));
+          ' > /tmp/demo.txt
+
+          cat /tmp/demo.txt
+
+          while read -r slug repo ramo; do
+            echo "::group::$slug ($repo@$ramo)"
+            rm -rf "/tmp/tpl-$slug"
+            git clone --depth 1 --branch "$ramo" \
+              "https://github.com/$repo.git" "/tmp/tpl-$slug"
+
+            pushd "/tmp/tpl-$slug" > /dev/null
+            pnpm install --frozen-lockfile
+            # Ogni anteprima vive sotto il dominio della vetrina, non a una
+            # radice propria: il template usa questo prefisso per ogni link
+            # interno (favicon, /privacy, /cookie, sitemap).
+            #
+            # PUBLIC_DEMO_MODE spegne ogni interazione che spedirebbe qualcosa:
+            # il template incorporato qui e' solo visualizzabile, non e' il
+            # sito consegnato al cliente (quello si costruisce clonando questo
+            # stesso repo SENZA questa variabile — comportamento normale).
+            SITE_BASE="/vetrina/demo/$slug/" PUBLIC_DEMO_MODE=true pnpm run build
+            popd > /dev/null
+
+            mkdir -p "apps/vetrina/dist/demo/$slug"
+            cp -r "/tmp/tpl-$slug/dist/." "apps/vetrina/dist/demo/$slug/"
+            echo "::endgroup::"
+          done < /tmp/demo.txt
+
+      - name: Verifica che ogni anteprima esista
+        # Un iframe che punta a una cartella mancante mostra una pagina di
+        # errore dentro la vetrina, in silenzio: meglio far fallire il deploy.
+        run: |
+          set -euo pipefail
+          while read -r slug _repo _ramo; do
+            test -f "apps/vetrina/dist/demo/$slug/index.html" \
+              || { echo "manca dist/demo/$slug/index.html"; exit 1; }
+            echo "ok: /demo/$slug/"
+          done < /tmp/demo.txt
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

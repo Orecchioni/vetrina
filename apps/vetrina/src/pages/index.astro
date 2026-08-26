@@ -96,7 +96,7 @@ const configForm: ConfigForm = {
                         <p class="scheda__voce-desc">{t.descrizione}</p>
                       </div>
                       {t.demo ? (
-                        <a class="bottone bottone--piccolo" href={t.demo} target="_blank" rel="noopener">
+                        <a class="bottone bottone--piccolo" href={`${base}template/${t.demo}/`}>
                           Guarda la demo
                         </a>
                       ) : (

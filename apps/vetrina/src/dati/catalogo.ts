@@ -19,9 +19,13 @@ export interface Template {
   nome: string;
   descrizione: string;
   /**
-   * URL della demo navigabile reale (§6.1: "non screenshot"). `null` finché il
-   * template non è pubblicato dal vivo: la card lo mostra come "demo in arrivo"
-   * invece di linkare il vuoto.
+   * Lo `slug` in `demo.ts` se esiste un'anteprima navigabile compilata dentro
+   * la vetrina, `null` se il template non è ancora pronto (la card mostra
+   * "demo in arrivo" invece di linkare il vuoto).
+   *
+   * Non è un URL esterno: la demo vive sotto `/demo/<slug>/` sul dominio della
+   * vetrina, perché i repo template sono sorgenti trasferibili, non siti
+   * pubblicati (vedi `demo.ts`).
    */
   demo: string | null;
 }
@@ -52,7 +56,7 @@ export const CATALOGO: Categoria[] = [
         id: "ristorante",
         nome: "Trattoria",
         descrizione: "Menù per portate, galleria del locale, prenotazione e orari. Pensato per chi lavora sul tavolo e sul passaparola.",
-        demo: "https://orecchioni.github.io/template-ristorante/",
+        demo: "ristorante",
       },
     ],
   },
@@ -65,7 +69,7 @@ export const CATALOGO: Categoria[] = [
         id: "studio-professionale",
         nome: "Studio",
         descrizione: "Aree di pratica, orari su appuntamento, richiesta di consulenza. Sobrio, senza galleria né prezzi esposti.",
-        demo: "https://orecchioni.github.io/template-studio-professionale/",
+        demo: "studio-professionale",
       },
     ],
   },
