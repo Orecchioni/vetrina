@@ -8,6 +8,14 @@ interface Props {
 
 const { titolo, descrizione } = Astro.props;
 const anno = new Date().getFullYear();
+
+/**
+ * `BASE_URL` di Astro segue `base` in astro.config.mjs: "/" in locale e sul
+ * dominio di consegna, "/vetrina/" su GitHub Pages (i project site vivono in
+ * sottocartella). Finisce sempre con "/", quindi si concatena senza slash
+ * in mezzo: `${base}prezzi`, mai `${base}/prezzi`.
+ */
+const base = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -17,7 +25,7 @@ const anno = new Date().getFullYear();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titolo}</title>
     <meta name="description" content={descrizione} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
     <meta property="og:title" content={titolo} />
     <meta property="og:description" content={descrizione} />
     <meta property="og:type" content="website" />
@@ -131,11 +139,11 @@ const anno = new Date().getFullYear();
   <body>
     <header class="intestazione">
       <div class="contenitore intestazione__barra">
-        <a class="intestazione__marchio" href="/">{NOME_PRODOTTO}</a>
+        <a class="intestazione__marchio" href={base}>{NOME_PRODOTTO}</a>
         <nav class="intestazione__nav">
-          <a href="/#categorie">Template</a>
-          <a href="/prezzi">Prezzi</a>
-          <a href="/#contatto">Contatti</a>
+          <a href={`${base}#categorie`}>Template</a>
+          <a href={`${base}prezzi`}>Prezzi</a>
+          <a href={`${base}#contatto`}>Contatti</a>
         </nav>
       </div>
     </header>
@@ -147,7 +155,7 @@ const anno = new Date().getFullYear();
     <footer class="pie">
       <div class="contenitore pie__righe">
         <span>© {anno} {NOME_PRODOTTO}</span>
-        <span><a href="/prezzi">Prezzi</a> · <a href="/#contatto">Contatti</a></span>
+        <span><a href={`${base}prezzi`}>Prezzi</a> · <a href={`${base}#contatto`}>Contatti</a></span>
       </div>
     </footer>
   </body>

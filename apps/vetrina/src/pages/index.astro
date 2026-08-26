@@ -4,6 +4,7 @@ import { CATALOGO, categorieDisponibili } from "../dati/catalogo.ts";
 import { NOME_PRODOTTO, PREZZO } from "../dati/config.ts";
 
 const disponibili = categorieDisponibili();
+const base = import.meta.env.BASE_URL;
 ---
 
 <Base
@@ -112,7 +113,7 @@ const disponibili = categorieDisponibili();
         Scrivici che attività hai e cosa ti serve. Ti rispondiamo con una
         proposta e, se il template non c'è ancora, ti diciamo quando arriva.
       </p>
-      <a class="bottone" href="/prezzi">Vedi cosa è incluso</a>
+      <a class="bottone" href={`${base}prezzi`}>Vedi cosa è incluso</a>
     </div>
   </section>
 </Base>

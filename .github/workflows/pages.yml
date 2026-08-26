@@ -1,0 +1,59 @@
+name: Deploy Pages
+
+# Pubblica apps/vetrina (il sito commerciale) su GitHub Pages a ogni push.
+# Soluzione temporanea per la fase di test (build gratuite, nessun account
+# esterno): quando la demo sarà quasi definitiva si passa a Netlify — vedi
+# la nota nel commit che introduce questo file.
+on:
+  push:
+    branches: [claude/project-analysis-plan-d8ejgs]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      # Install alla radice del monorepo: e' cosi' che pnpm collega
+      # @vetrina/schema e @vetrina/form come dipendenze di workspace.
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build apps/vetrina
+        # I project site di GitHub Pages vivono a owner.github.io/nome-repo/:
+        # SITE_BASE prefissa ogni link interno (vedi astro.config.mjs).
+        env:
+          SITE_BASE: /vetrina/
+        run: pnpm --filter @vetrina/sito run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/vetrina/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
