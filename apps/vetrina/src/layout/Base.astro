@@ -129,6 +129,108 @@ const base = import.meta.env.BASE_URL;
         color: var(--tenue);
       }
 
+      /*
+       * Il form arriva da @vetrina/form con la sola struttura e il minimo
+       * funzionale (honeypot nascosto, colore dell'errore) — la stessa
+       * ripartizione della regola 3: il template decide come appaiono i
+       * campi, non come si spediscono. Stile qui, come nei due template.
+       */
+      .vetrina-form {
+        display: grid;
+        gap: 1.1rem;
+      }
+      .vetrina-form p {
+        margin: 0;
+      }
+      .vetrina-form
+        > p:not(.vetrina-form__errori):not(.vetrina-form__honeypot):not(:has(input[type="checkbox"])) {
+        display: grid;
+        gap: 0.4rem;
+      }
+      .vetrina-form label {
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+      .vetrina-form input:not([type="checkbox"]),
+      .vetrina-form textarea {
+        width: 100%;
+        padding: 0.7rem 0.85rem;
+        font: inherit;
+        color: inherit;
+        background: var(--sfondo);
+        border: 1px solid var(--bordo);
+        border-radius: 0.35rem;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .vetrina-form textarea {
+        resize: vertical;
+        min-height: 6rem;
+      }
+      .vetrina-form input:not([type="checkbox"]):focus-visible,
+      .vetrina-form textarea:focus-visible {
+        outline: none;
+        border-color: var(--accento);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accento) 22%, transparent);
+      }
+
+      /*
+       * Niente griglia sulla label del consenso: il consenso privacy contiene
+       * quattro figli (casella, testo, link, versione) e una griglia a due
+       * colonne li dispone uno per cella, spezzando la frase — trovato e
+       * corretto in template-ristorante, stesso fix qui.
+       */
+      .vetrina-form p:has(input[type="checkbox"]) label {
+        display: block;
+        position: relative;
+        padding-left: 1.75rem;
+        font-size: 0.85rem;
+        font-weight: 400;
+        line-height: 1.45;
+      }
+      .vetrina-form input[type="checkbox"] {
+        position: absolute;
+        left: 0;
+        top: 0.15rem;
+        width: 1.05rem;
+        height: 1.05rem;
+        margin: 0;
+        accent-color: var(--accento);
+      }
+      .vetrina-form a {
+        color: var(--primario);
+      }
+
+      .vetrina-form button[type="submit"] {
+        justify-self: start;
+        min-height: 3rem;
+        padding: 0.8rem 1.75rem;
+        font: inherit;
+        font-weight: 600;
+        color: #fff;
+        background: var(--accento);
+        border: none;
+        border-radius: 0.4rem;
+        cursor: pointer;
+        transition: transform 0.12s ease, box-shadow 0.15s ease;
+      }
+      .vetrina-form button[type="submit"]:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px color-mix(in srgb, var(--accento) 35%, transparent);
+      }
+      .vetrina-form button[type="submit"]:disabled {
+        opacity: 0.5;
+        cursor: progress;
+        transform: none;
+        box-shadow: none;
+      }
+      .vetrina-form__errori:not([hidden]) {
+        padding: 0.7rem 0.85rem;
+        font-size: 0.875rem;
+        border-radius: 0.35rem;
+        background: color-mix(in srgb, #b3261e 10%, transparent);
+        border-left: 3px solid #b3261e;
+      }
+
       @media (prefers-reduced-motion: reduce) {
         html {
           scroll-behavior: auto;
@@ -155,7 +257,10 @@ const base = import.meta.env.BASE_URL;
     <footer class="pie">
       <div class="contenitore pie__righe">
         <span>© {anno} {NOME_PRODOTTO}</span>
-        <span><a href={`${base}prezzi`}>Prezzi</a> · <a href={`${base}#contatto`}>Contatti</a></span>
+        <span>
+          <a href={`${base}prezzi`}>Prezzi</a> · <a href={`${base}#contatto`}>Contatti</a> ·
+          <a href={`${base}privacy`}>Privacy</a> · <a href={`${base}cookie`}>Cookie</a>
+        </span>
       </div>
     </footer>
   </body>

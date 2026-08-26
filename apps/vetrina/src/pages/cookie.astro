@@ -1,0 +1,44 @@
+---
+import Base from "../layout/Base.astro";
+import { NOME_PRODOTTO } from "../dati/config.ts";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Base titolo={`Cookie Policy — ${NOME_PRODOTTO}`} descrizione="Nessun cookie di terze parti su questo sito.">
+  <section class="informativa">
+    <div class="contenitore informativa__interno">
+      <h1>Cookie Policy</h1>
+      <p>
+        Questo sito non installa cookie di profilazione né cookie di terze parti.
+        Non ci sono servizi esterni incorporati (mappe, video, font remoti) che
+        potrebbero impostarne. Per questo non compare un banner di consenso ai
+        cookie: non c'è nulla su cui acconsentire.
+      </p>
+      <p>
+        L'unico dato raccolto è quello che invii volontariamente tramite il
+        modulo di contatto, descritto nella <a href={`${base}privacy`}>Privacy Policy</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .informativa {
+    padding-block: clamp(2.5rem, 7vw, 4rem);
+  }
+  .informativa__interno {
+    max-width: 42rem;
+  }
+  h1 {
+    color: var(--primario);
+    margin: 0 0 1.25rem;
+  }
+  p {
+    line-height: 1.65;
+    margin: 0 0 1rem;
+  }
+  a {
+    color: var(--primario);
+  }
+</style>

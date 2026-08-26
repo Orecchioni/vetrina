@@ -1,10 +1,27 @@
 ---
+import Form from "@vetrina/form";
+import type { ConfigForm } from "@vetrina/schema";
 import Base from "../layout/Base.astro";
 import { CATALOGO, categorieDisponibili } from "../dati/catalogo.ts";
-import { NOME_PRODOTTO, PREZZO } from "../dati/config.ts";
+import { NOME_PRODOTTO, PREZZO, CONTATTO } from "../dati/config.ts";
 
 const disponibili = categorieDisponibili();
 const base = import.meta.env.BASE_URL;
+
+/**
+ * Il form di contatto del sito, con lo stesso componente condiviso dei
+ * template (regola 3): questo sito è un cliente della propria pipeline di
+ * ingestion, non un'eccezione. `id` e `sorgente` seguono la stessa
+ * convenzione di forms.ts nei content.json.
+ */
+const configForm: ConfigForm = {
+  id: "form_contatto_sito",
+  sorgente: "contatto_home",
+  campi_standard: ["nome", "email", "messaggio"],
+  campi_extra: [],
+  consenso_privacy: true,
+  consenso_marketing: true,
+};
 ---
 
 <Base
@@ -107,13 +124,24 @@ const base = import.meta.env.BASE_URL;
   </section>
 
   <section id="contatto" class="contatto">
-    <div class="contenitore contatto__interno">
-      <h2 class="contatto__titolo">Non trovi la tua categoria, o hai una domanda?</h2>
-      <p class="contatto__testo">
-        Scrivici che attività hai e cosa ti serve. Ti rispondiamo con una
-        proposta e, se il template non c'è ancora, ti diciamo quando arriva.
-      </p>
-      <a class="bottone" href={`${base}prezzi`}>Vedi cosa è incluso</a>
+    <div class="contenitore contatto__griglia">
+      <div class="contatto__testata">
+        <h2 class="contatto__titolo">Non trovi la tua categoria, o hai una domanda?</h2>
+        <p class="contatto__testo">
+          Scrivici che attività hai e cosa ti serve. Ti rispondiamo con una
+          proposta e, se il template non c'è ancora, ti diciamo quando arriva.
+        </p>
+        <a class="bottone" href={`${base}prezzi`}>Vedi cosa è incluso</a>
+      </div>
+      <div class="contatto__form">
+        <Form
+          config={configForm}
+          tenantId={CONTATTO.tenant_id}
+          endpoint={CONTATTO.endpoint}
+          informativaVersione={CONTATTO.informativa_versione}
+          informativaUrl={`${base}privacy`}
+        />
+      </div>
     </div>
   </section>
 </Base>
@@ -323,8 +351,18 @@ const base = import.meta.env.BASE_URL;
     border-top: 1px solid var(--bordo);
     padding-block: clamp(3rem, 8vw, 4.5rem);
   }
-  .contatto__interno {
-    max-width: 42rem;
+  .contatto__griglia {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3rem);
+    align-items: start;
+  }
+  @media (min-width: 48rem) {
+    .contatto__griglia {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .contatto__testata {
+    max-width: 32rem;
   }
   .contatto__titolo {
     font-size: clamp(1.5rem, 4.5vw, 2.1rem);
@@ -334,6 +372,12 @@ const base = import.meta.env.BASE_URL;
   .contatto__testo {
     color: var(--tenue);
     margin: 0 0 1.75rem;
+  }
+  .contatto__form {
+    background: var(--superficie);
+    border: 1px solid var(--bordo);
+    border-radius: 0.6rem;
+    padding: clamp(1.25rem, 4vw, 1.75rem);
   }
 </style>
 

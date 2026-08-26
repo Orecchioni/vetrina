@@ -1,0 +1,45 @@
+---
+import Base from "../layout/Base.astro";
+import { NOME_PRODOTTO, EMAIL_CONTATTO } from "../dati/config.ts";
+import { INFORMATIVA_VERSIONE, INFORMATIVA_AGGIORNATA_IL, informativaTesto } from "../dati/informativa.ts";
+import { markdownMinimoAHtml } from "../lib/markdown-minimo.ts";
+
+const corpo = markdownMinimoAHtml(informativaTesto(NOME_PRODOTTO, EMAIL_CONTATTO));
+---
+
+<Base titolo={`Privacy Policy — ${NOME_PRODOTTO}`} descrizione="Informativa sul trattamento dei dati personali.">
+  <section class="informativa">
+    <div class="contenitore informativa__interno">
+      <h1>Privacy Policy</h1>
+      <p class="informativa__versione">Versione {INFORMATIVA_VERSIONE} — aggiornata a {INFORMATIVA_AGGIORNATA_IL}.</p>
+      <div class="informativa__corpo" set:html={corpo} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .informativa {
+    padding-block: clamp(2.5rem, 7vw, 4rem);
+  }
+  .informativa__interno {
+    max-width: 42rem;
+  }
+  h1 {
+    color: var(--primario);
+    margin: 0 0 0.5rem;
+  }
+  .informativa__versione {
+    color: var(--tenue);
+    font-size: 0.9rem;
+    margin: 0 0 2rem;
+  }
+  .informativa__corpo :global(h2) {
+    font-size: 1.15rem;
+    color: var(--primario);
+    margin: 2rem 0 0.6rem;
+  }
+  .informativa__corpo :global(p) {
+    margin: 0 0 1rem;
+    line-height: 1.65;
+  }
+</style>

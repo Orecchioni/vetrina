@@ -26,12 +26,20 @@ export const PREZZO = {
 };
 
 /**
+ * Email di contatto del sito, mostrata nell'informativa e nel footer.
+ * Segnaposto: da sostituire con l'indirizzo vero prima di mettere online.
+ */
+export const EMAIL_CONTATTO = "info@vetrina-sito.it";
+
+/**
  * L'endpoint del form di contatto del sito (§6.1, "tenant proprio"): il sito
  * commerciale e' esso stesso un cliente della propria pipeline di ingestion.
- * Segnaposto finche' non si crea lo scenario Make dedicato, come per i template.
+ * Riusa lo scenario Make gia' verificato al Blocco 1 (stesso webhook dei due
+ * template demo, `tenant_id` distinto per riconoscere la riga sul foglio) —
+ * non se ne apre uno nuovo solo per la fase di test.
  */
 export const CONTATTO = {
   tenant_id: "tnt_vetrina_sito",
-  endpoint: "https://hook.eu1.make.com/xxxxxxxxxxxxxxxxxxxx",
+  endpoint: "https://hook.eu1.make.com/7fvl4fx9iqgz0ddcyfhwafidbvhvnyc6",
   informativa_versione: "2026-08-v1",
 };
