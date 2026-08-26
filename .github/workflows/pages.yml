@@ -55,19 +55,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Legge slug/repo/ramo da demo.ts senza dipendere da un parser TS:
-          # il file è dati, non logica, e il formato è stabile.
-          node -e '
-            const src = require("fs").readFileSync("apps/vetrina/src/dati/demo.ts", "utf8");
-            const blocchi = src.match(/\{\s*slug:[\s\S]*?\}/g) ?? [];
-            const righe = blocchi.map((b) => {
-              const g = (k) => (b.match(new RegExp(k + ':\\s*"([^"]+)"')) ?? [])[1];
-              return [g("slug"), g("repo"), g("ramo")].join(" ");
-            });
-            if (righe.length === 0) throw new Error("nessuna demo trovata in demo.ts");
-            console.log(righe.join("\n"));
-          ' > /tmp/demo.txt
-
+          node apps/vetrina/scripts/leggi-demo.mjs > /tmp/demo.txt
           cat /tmp/demo.txt
 
           while read -r slug repo ramo; do
