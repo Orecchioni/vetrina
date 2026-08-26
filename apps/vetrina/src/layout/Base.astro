@@ -1,0 +1,154 @@
+---
+import { NOME_PRODOTTO } from "../dati/config.ts";
+
+interface Props {
+  titolo: string;
+  descrizione: string;
+}
+
+const { titolo, descrizione } = Astro.props;
+const anno = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titolo}</title>
+    <meta name="description" content={descrizione} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={titolo} />
+    <meta property="og:description" content={descrizione} />
+    <meta property="og:type" content="website" />
+
+    <style is:global>
+      :root {
+        --primario: #1c2b4a;
+        --accento: #c8622d;
+        --sfondo: #fbfaf8;
+        --superficie: #ffffff;
+        --testo: #1a1d24;
+        --tenue: color-mix(in srgb, var(--testo) 62%, transparent);
+        --bordo: color-mix(in srgb, var(--testo) 14%, transparent);
+        --font-titolo: "Georgia", "Times New Roman", serif;
+        --font-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--sfondo);
+        color: var(--testo);
+        font-family: var(--font-corpo);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1, h2, h3 {
+        font-family: var(--font-titolo);
+        line-height: 1.15;
+        text-wrap: balance;
+      }
+      a {
+        color: inherit;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .contenitore {
+        max-width: 64rem;
+        margin: 0 auto;
+        padding-inline: 1.5rem;
+      }
+
+      .intestazione {
+        border-bottom: 1px solid var(--bordo);
+        background: var(--superficie);
+      }
+      .intestazione__barra {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-block: 1.1rem;
+      }
+      .intestazione__marchio {
+        font-family: var(--font-titolo);
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primario);
+        text-decoration: none;
+      }
+      .intestazione__nav {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.95rem;
+      }
+      .intestazione__nav a {
+        text-decoration: none;
+        color: var(--tenue);
+      }
+      .intestazione__nav a:hover {
+        color: var(--testo);
+      }
+      @media (max-width: 34rem) {
+        .intestazione__nav {
+          display: none;
+        }
+      }
+
+      .pie {
+        border-top: 1px solid var(--bordo);
+        margin-top: 4rem;
+        padding: 2.5rem 0;
+        color: var(--tenue);
+        font-size: 0.9rem;
+      }
+      .pie__righe {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+        justify-content: space-between;
+      }
+      .pie a {
+        color: var(--tenue);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="intestazione">
+      <div class="contenitore intestazione__barra">
+        <a class="intestazione__marchio" href="/">{NOME_PRODOTTO}</a>
+        <nav class="intestazione__nav">
+          <a href="/#categorie">Template</a>
+          <a href="/prezzi">Prezzi</a>
+          <a href="/#contatto">Contatti</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="pie">
+      <div class="contenitore pie__righe">
+        <span>© {anno} {NOME_PRODOTTO}</span>
+        <span><a href="/prezzi">Prezzi</a> · <a href="/#contatto">Contatti</a></span>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+---
+import Base from "../layout/Base.astro";
+import { NOME_PRODOTTO, PREZZO } from "../dati/config.ts";
+import { INCLUSO, NON_INCLUSO, PAGAMENTO } from "../dati/prezzo-dettaglio.ts";
+---
+
+<Base
+  titolo={`Prezzi — ${NOME_PRODOTTO}`}
+  descrizione="Un prezzo unico, tutto incluso. Vedi cosa comprende e cosa no, senza sorprese."
+>
+  <section class="prezzi">
+    <div class="contenitore prezzi__interno">
+      <h1 class="prezzi__titolo">Un prezzo solo, tutto chiaro</h1>
+
+      <div class="prezzi__cartellino">
+        <span class="prezzi__cifra">{PREZZO.valuta}{PREZZO.cifra}</span>
+        <span class="prezzi__nota">{PREZZO.nota}</span>
+      </div>
+
+      <div class="prezzi__pagamento">
+        {PAGAMENTO.map((riga) => <span class="prezzi__rata">{riga}</span>)}
+      </div>
+
+      <div class="prezzi__liste">
+        <div class="prezzi__lista">
+          <h2 class="prezzi__lista-titolo prezzi__lista-titolo--si">È incluso</h2>
+          <ul>
+            {INCLUSO.map((voce) => <li>{voce}</li>)}
+          </ul>
+        </div>
+        <div class="prezzi__lista">
+          <h2 class="prezzi__lista-titolo prezzi__lista-titolo--no">Non è incluso</h2>
+          <ul class="prezzi__lista--no">
+            {NON_INCLUSO.map((voce) => <li>{voce}</li>)}
+          </ul>
+        </div>
+      </div>
+
+      <a class="bottone bottone--grande" href="/#categorie">Trova il tuo template</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prezzi {
+    padding-block: clamp(3rem, 8vw, 5rem);
+  }
+  .prezzi__interno {
+    max-width: 48rem;
+  }
+  .prezzi__titolo {
+    font-size: clamp(1.9rem, 5.5vw, 3rem);
+    color: var(--primario);
+    margin: 0 0 1.5rem;
+  }
+
+  .prezzi__cartellino {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.9rem;
+    padding: 1.5rem;
+    background: var(--primario);
+    color: #fff;
+    border-radius: 0.6rem;
+  }
+  .prezzi__cifra {
+    font-family: var(--font-titolo);
+    font-size: 2.75rem;
+    font-weight: 700;
+  }
+  .prezzi__nota {
+    color: color-mix(in srgb, #fff 80%, transparent);
+  }
+
+  .prezzi__pagamento {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.25rem 0 2.5rem;
+  }
+  .prezzi__rata {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    background: color-mix(in srgb, var(--primario) 8%, var(--sfondo));
+    border: 1px solid var(--bordo);
+    border-radius: 999px;
+  }
+
+  .prezzi__liste {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (min-width: 40rem) {
+    .prezzi__liste {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .prezzi__lista-titolo {
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--bordo);
+  }
+  .prezzi__lista-titolo--si {
+    color: var(--primario);
+  }
+  .prezzi__lista-titolo--no {
+    color: var(--tenue);
+  }
+  .prezzi__lista ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .prezzi__lista--no {
+    color: var(--tenue);
+  }
+
+  .bottone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: 0.8rem 1.75rem;
+    background: var(--accento);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    transition: transform 0.12s ease, box-shadow 0.15s ease;
+  }
+  .bottone:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--accento) 35%, transparent);
+  }
+  .bottone--grande {
+    font-size: 1.1rem;
+    padding: 0.95rem 2.25rem;
+  }
+</style>

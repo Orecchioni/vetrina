@@ -1,0 +1,22 @@
+{
+  "name": "@vetrina/sito",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Il sito commerciale di Vetrina (Blocco 5a): home con proposta di valore e prezzo, domanda filtro per categoria, catalogo dei template con demo, form di contatto. Senza incasso (D21): il prezzo si espone, non si incassa qui.",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "typecheck": "astro check",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@vetrina/form": "workspace:*",
+    "@vetrina/schema": "workspace:*",
+    "astro": "^5.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.7.2"
+  }
+}

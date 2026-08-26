@@ -8,6 +8,25 @@ importers:
 
   .: {}
 
+  apps/vetrina:
+    dependencies:
+      '@vetrina/form':
+        specifier: workspace:*
+        version: link:../../packages/vetrina-form
+      '@vetrina/schema':
+        specifier: workspace:*
+        version: link:../../packages/vetrina-schema
+      astro:
+        specifier: ^5.1.0
+        version: 5.18.2(@types/node@22.20.1)(rollup@4.62.4)(typescript@5.9.3)(yaml@2.9.0)
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.4
+        version: 0.9.10(prettier@3.9.6)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
   apps/vetrina-form-demo:
     dependencies:
       '@vetrina/form':
